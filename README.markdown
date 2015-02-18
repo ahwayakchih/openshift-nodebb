@@ -128,13 +128,14 @@ git push
 
 After a while, you should be able to see something like this at the end of a long text output from previous command:
 
-.-============================================-.
-.  Setup Finished.
-.
-.  You can view your NodeBB at:
-.  http://nodebb-youropenshiftusername.rhcloud.com/
-^-============================================-^
-
+```
+	.-============================================-.
+	.  Setup Finished.
+	.
+	.  You can view your NodeBB at:
+	.  http://nodebb-youropenshiftusername.rhcloud.com/
+	^-============================================-^
+```
 
 ## Acknowledgments
 
