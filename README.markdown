@@ -81,20 +81,20 @@ git push
 After a while, you should be able to see something like this at the end of a long text output from previous command:
 
 ```
-	******************************************
-	*	Setup Finished.
-	*
-	*	New administrator user has been created:
-	*
-	*		login   : 408a3ca2-1346-4056-a2d9-28cf45e63d4f
-	*		password: XRi2HvfNegvxJkrqf8vaurgwbbWfMY
-	*
-	*	You can login at:
-	*		http://nodebb-youropenshiftusername.rhcloud.com/login
-	*
-	*	WARNING: Be sure to change admin e-mail and
-	*	         password as soon as possible!
-	******************************************
+	.-============================================-.
+	.  Setup Finished.
+	.
+	.  New administrator user has been created:
+	.
+	.    login   : 408a3ca2-1346-4056-a2d9-28cf45e63d4f
+	.    password: XRi2HvfNegvxJkrqf8vaurgwbbWfMY
+	.
+	.  You can login at:
+	.  http://nodebb-youropenshiftusername.rhcloud.com/login
+	.
+	.  WARNING: Be sure to change admin e-mail and
+	.           password as soon as possible!
+	^-============================================-^
 ```
 
 Use that new admin login and password to login into your new NodeBB installation, and change them to something suitable for you.
@@ -123,6 +123,17 @@ git pull --no-edit -s recursive -X theirs openshift master
 ```sh
 git push
 ```
+
+### 3. That's it!
+
+After a while, you should be able to see something like this at the end of a long text output from previous command:
+
+.-============================================-.
+.  Setup Finished.
+.
+.  You can view your NodeBB at:
+.  http://nodebb-youropenshiftusername.rhcloud.com/
+^-============================================-^
 
 
 ## Acknowledgments
