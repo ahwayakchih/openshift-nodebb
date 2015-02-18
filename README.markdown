@@ -59,7 +59,7 @@ git pull --no-edit -s recursive -X theirs upstream v0.6.x
 This will allow to import patches and action_hooks needed to use NodeBB on OpenShift without worrying too much about dynamic IP changes.
 
 ```sh
-git remote add openshift -m master https://github.com/NodeBB/NodeBB.git
+git remote add openshift -m master https://github.com/ahwayakchih/openshift-nodebb.git
 ```
 
 ### 6. Import OpenShift-NodeBB patches
@@ -86,11 +86,11 @@ After a while, you should be able to see something like this at the end of a lon
 	*
 	*	New administrator user has been created:
 	*
-	*		login   : $name
-	*		password: $pass
+	*		login   : 408a3ca2-1346-4056-a2d9-28cf45e63d4f
+	*		password: XRi2HvfNegvxJkrqf8vaurgwbbWfMY
 	*
 	*	You can login at:
-	*		http://$OPENSHIFT_APP_DNS/login
+	*		http://nodebb-youropenshiftusername.rhcloud.com/login
 	*
 	*	WARNING: Be sure to change admin e-mail and
 	*	         password as soon as possible!
