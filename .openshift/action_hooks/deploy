@@ -1,0 +1,96 @@
+#!/bin/bash
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+
+cd $OPENSHIFT_REPO_DIR
+
+# Read NodeBB version from package.json
+version=`cat package.json | grep version | sed -s 's/[^0-9\.]//g'`
+
+echo "Configuring NodeBB $version for OpenShift"
+
+# Apply patches for selected version
+for changeset in `ls patches/openshift-$version*.diff` ; do
+	echo "Applying changeset "$changeset
+	patch -N --no-backup-if-mismatch -s -r $changeset.rejected -p1 < $changeset
+	if [ -f "$changeset.rejected" ] ; then
+		echo "Changeset $changeset was rejected. Check $changeset.rej to see what parts of it could not be applied"
+	fi
+done
+
+# Override app.js
+# We have to move original and replace it with our "wrapper"
+# because NodeBB calls hardcoded "app.js" in some cases
+# and we do not want to modify code in too many places.
+if [ -f "openshift-app.js" ] ; then
+	echo "Overriding app.js"
+	mv app.js _app.js
+	mv openshift-app.js app.js
+fi
+
+echo "Running setup"
+
+# Generate password
+pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
+
+# Generate name
+name=`uuidgen`
+
+# Try to get e-mail, if not found, use fake address
+mail=$OPENSHIFT_LOGIN
+if [ "$mail" = "" ] ; then
+	mail="$OPENSHIFT_APP_NAME@$OPENSHIFT_APP_DNS"
+fi
+
+# Prepare JSON
+json='{"admin:username": "'$name'", "admin:email": "'$mail'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
+
+# Run setup and redirect output to file, so we can search it later
+LOGFILE=openshift.log
+node app --setup "$json" &> $LOGFILE
+
+# Output to whole thing to the client
+cat $LOGFILE
+
+# Check result by looking for specific text
+# Would be better if NodeBB's setup would exit with code
+# but it does not, so we use this fragile workaround.
+if cat $LOGFILE | grep -q "There was a problem completing NodeBB" ; then
+	# Failed
+	client_result "Setup failed. Check $LOGFILE for more information."
+else
+	# Success
+	if cat $LOGFILE | grep -q "running initial user setup" ; then
+		# Created new admin user
+		client_result ""
+		client_result "******************************************"
+		client_result "*	Setup Finished."
+		client_result "*"
+		client_result "*	New administrator user has been created:"
+		client_result "*"
+		client_result "*		login   : $name"
+		client_result "*		password: $pass"
+		client_result "*"
+		client_result "*	You can login at:"
+		client_result "*		http://$OPENSHIFT_APP_DNS/login"
+		client_result "*"
+		client_result "*	WARNING: Be sure to change admin e-mail and"
+		client_result "*	         password as soon as possible!"
+		client_result "******************************************"
+		client_result ""
+	else
+		# Admin user was already there
+		client_result ""
+		client_result "******************************************"
+		client_result "*	Setup Finished."
+		client_result "*"
+		client_result "*	You can view your NodeBB at:"
+		client_result "*	http://$OPENSHIFT_APP_DNS/"
+		client_result "******************************************"
+		client_result ""
+	fi
+
+	rm $LOGFILE
+fi
+
+# Make sure, that node.env will know to run app.js
+sed -i 's/server.js/app.js/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
