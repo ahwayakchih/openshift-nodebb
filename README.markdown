@@ -127,5 +127,9 @@ git push
 
 ## Acknowledgments
 
-This guide wouldn't be possible without instructions from https://github.com/NodeBB/nodebb-english/blob/master/installing/cloud/openshift.rst and OpenShift documentation and examples from https://developers.openshift.com/en/managing-action-hooks.html.
-It wouldn't be created if not for the questions and conversations with Sylwester Cyba from nhl.pl.
+This guide wouldn't be possible without instructions from
+https://github.com/NodeBB/nodebb-english/blob/master/installing/cloud/openshift.rst
+and OpenShift documentation and examples from
+https://developers.openshift.com/en/managing-action-hooks.html
+
+It also wouldn't be created if not for the questions and conversations with Sylwester Cyba from http://nhl.pl/.
