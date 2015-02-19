@@ -51,7 +51,8 @@ nconf.overrides((function(){
 	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 		config.database = config.database || 'mongo';
 		config.mongo = {
-			database: 'nodebb'
+			// OpenShift seems to create MongoDB datbase with the same name as the application name.
+			database: process.env.OPENSHIFT_APP_NAME || 'nodebb'
 		};
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
