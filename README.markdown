@@ -8,15 +8,16 @@ Before continuing, you should know how to open and use command line on your syst
 
 ## Prerequisites
 
-First of all, you need an OpenShift account. Next, install `rhc` application, as described at
-https://developers.openshift.com/en/managing-client-tools.html
+First of all, you need an OpenShift account. If you do not have one yet, now is the time to register at https://www.openshift.com/app/account/new.
+
+Next, install `rhc` application, as described at https://developers.openshift.com/en/managing-client-tools.html.
 
 After that, you should have working `rhc` and `git` available on your system.
 
 
 ## Installation
 
-To install NodeBB, run following commands step-by-step, without omitting any of them.
+To install NodeBB, use following command line step-by-step, without omitting any of them.
 
 ### 1. Creating a new application
 
