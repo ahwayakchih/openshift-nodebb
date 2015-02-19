@@ -50,7 +50,9 @@ nconf.overrides((function(){
 	// MongoDB
 	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 		config.database = config.database || 'mongo';
-		config.mongo = {};
+		config.mongo = {
+			database: 'nodebb'
+		};
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
 			config.mongo.host = process.env.OPENSHIFT_MONGODB_DB_HOST;
