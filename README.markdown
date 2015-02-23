@@ -17,7 +17,7 @@ After that, you should have working `rhc` and `git` available on your system.
 
 ## Installation
 
-To install NodeBB, use following command line step-by-step, without omitting any of them.
+To install NodeBB, use following command lines step-by-step (they were tested using `bash` shell), without omitting any of them.
 
 ### 1. Creating a new application
 
