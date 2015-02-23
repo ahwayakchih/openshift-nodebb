@@ -87,8 +87,9 @@ After a while, you should be able to see something like this at the end of a lon
 	.
 	.  New administrator user has been created:
 	.
-	.    login   : 408a3ca2-1346-4056-a2d9-28cf45e63d4f
-	.    password: XRi2HvfNegvxJkrqf8vaurgwbbWfMY
+	.    email   : 76Kz-TCyX@nodebb-youropenshiftusername.rhcloud.com
+	.    login   : 76Kz-TCyX
+	.    password: 9D7u-KAtN
 	.
 	.  You can login at:
 	.  http://nodebb-youropenshiftusername.rhcloud.com/login

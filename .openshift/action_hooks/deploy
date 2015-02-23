@@ -29,16 +29,16 @@ fi
 
 echo "Running setup"
 
-# Generate password
-pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
-
 # Generate name
-name=`uuidgen`
+name=`tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 | fold -w4 | paste -sd\- -`
+
+# Generate password
+pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 | fold -w4 | paste -sd\- -`
 
 # Try to get e-mail, if not found, use fake address
 mail=$OPENSHIFT_LOGIN
 if [ "$mail" = "" ] ; then
-	mail="$OPENSHIFT_APP_NAME@$OPENSHIFT_APP_DNS"
+	mail="$name@$OPENSHIFT_APP_DNS"
 fi
 
 # Prepare JSON
@@ -67,6 +67,7 @@ else
 		client_result "."
 		client_result ".  New administrator user has been created:"
 		client_result "."
+		client_result ".    email   : $mail"
 		client_result ".    login   : $name"
 		client_result ".    password: $pass"
 		client_result "."
