@@ -30,10 +30,10 @@ fi
 echo "Running setup"
 
 # Generate name
-name=`tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 | fold -w4 | paste -sd\- -`
+name=$OPENSHIFT_APP_NAME
 
 # Generate password
-pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 | fold -w4 | paste -sd\- -`
+pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1 | fold -w4 | paste -sd\- -`
 
 # Try to get e-mail, if not found, use fake address
 mail=$OPENSHIFT_LOGIN
