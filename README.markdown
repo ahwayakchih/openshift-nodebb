@@ -74,7 +74,7 @@ git pull --no-edit -s recursive -X theirs openshift master
 This will push source code to OpenShift servers, deploy and start application.
 
 ```sh
-git push
+git push origin master
 ```
 
 ### 8. That's it!
