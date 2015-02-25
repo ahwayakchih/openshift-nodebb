@@ -92,7 +92,7 @@ After a while, you should be able to see something like this at the end of a lon
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
 	.  You can login at:
-	.  http://nodebb-youropenshiftusername.rhcloud.com/login
+	.  https://nodebb-youropenshiftusername.rhcloud.com/login
 	.
 	.  WARNING: Be sure to change admin e-mail and
 	.           password as soon as possible!
@@ -137,7 +137,7 @@ After a while, you should be able to see something like this at the end of a lon
 	.  Setup Finished.
 	.
 	.  You can view your NodeBB at:
-	.  http://nodebb-youropenshiftusername.rhcloud.com/
+	.  https://nodebb-youropenshiftusername.rhcloud.com/
 	^-============================================-^
 ```
 

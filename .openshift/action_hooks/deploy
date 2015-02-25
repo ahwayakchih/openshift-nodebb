@@ -72,7 +72,7 @@ else
 		client_result ".    password: $pass"
 		client_result "."
 		client_result ".  You can login at:"
-		client_result ".  http://$OPENSHIFT_APP_DNS/login"
+		client_result ".  https://$OPENSHIFT_APP_DNS/login"
 		client_result "."
 		client_result ".  WARNING: Be sure to change admin e-mail and"
 		client_result ".           password as soon as possible!"
@@ -85,7 +85,7 @@ else
 		client_result ".  Setup Finished."
 		client_result "."
 		client_result ".  You can view your NodeBB at:"
-		client_result ".  http://$OPENSHIFT_APP_DNS/"
+		client_result ".  https://$OPENSHIFT_APP_DNS/"
 		client_result "^-============================================-^"
 		client_result ""
 	fi
