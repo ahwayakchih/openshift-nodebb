@@ -56,14 +56,23 @@ cat $LOGFILE
 # but it does not, so we use this fragile workaround.
 if cat $LOGFILE | grep -q "There was a problem completing NodeBB" ; then
 	# Failed
-	client_result "Setup failed. Check $LOGFILE for more information."
+	client_result ""
+	client_result ".-============================================-."
+	client_result ".  Setup failed."
+	client_result "."
+	client_result ".  There was a problem completing NodeBB setup."
+	client_result "."
+	client_result ".  Check logfile for more information:"
+	client_result ".  $LOGFILE"
+	client_result "^-============================================-^"
+	client_result ""
 else
 	# Success
 	if cat $LOGFILE | grep -q "running initial user setup" ; then
 		# Created new admin user
 		client_result ""
 		client_result ".-============================================-."
-		client_result ".  Setup Finished."
+		client_result ".  Setup finished."
 		client_result "."
 		client_result ".  New administrator user has been created:"
 		client_result "."
@@ -82,7 +91,7 @@ else
 		# Admin user was already there
 		client_result ""
 		client_result ".-============================================-."
-		client_result ".  Setup Finished."
+		client_result ".  Setup finished."
 		client_result "."
 		client_result ".  You can view your NodeBB at:"
 		client_result ".  https://$OPENSHIFT_APP_DNS/"
