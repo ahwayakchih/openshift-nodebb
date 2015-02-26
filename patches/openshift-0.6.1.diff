@@ -1,5 +1,18 @@
+diff --git a/app.js b/app.js
+index acb1a3b..d24175e 100644
+--- a/app.js
++++ b/app.js
+@@ -21,7 +21,7 @@
+ /*global require, global, process*/
+ 
+ var nconf = require('nconf');
+-nconf.argv().env();
++nconf.argv().env('__');
+ 
+ var fs = require('fs'),
+ 	os = require('os'),
 diff --git a/src/database/mongo.js b/src/database/mongo.js
-index 0e69c12..5f8aae2 100644
+index 0e69c12..a13cb5d 100644
 --- a/src/database/mongo.js
 +++ b/src/database/mongo.js
 @@ -22,12 +22,14 @@
@@ -20,7 +33,7 @@ index 0e69c12..5f8aae2 100644
  		{
  			name: "mongo:database",
 diff --git a/src/database/redis.js b/src/database/redis.js
-index 727705c..4c306ce 100644
+index 727705c..156131a 100644
 --- a/src/database/redis.js
 +++ b/src/database/redis.js
 @@ -28,7 +28,8 @@
