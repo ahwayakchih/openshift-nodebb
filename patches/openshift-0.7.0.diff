@@ -15,7 +15,7 @@ index 0e69c12..5f8aae2 100644
  			description: 'Password of your MongoDB database',
 -			hidden: true
 +			hidden: true,
-+			before: function(value) { value = value || nconf.get('mongo:password'); return value; }
++			before: function(value) { value = value || nconf.get('mongo:password') || ''; return value; }
  		},
  		{
  			name: "mongo:database",
@@ -29,7 +29,7 @@ index 727705c..4c306ce 100644
  			description: 'Password of your Redis database',
 -			hidden: true
 +			hidden: true,
-+			before: function(value) { value = value || nconf.get('redis:password'); return value; }
++			before: function(value) { value = value || nconf.get('redis:password') || ''; return value; }
  		},
  		{
  			name: "redis:database",
