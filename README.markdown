@@ -125,7 +125,7 @@ git pull --no-edit -s recursive -X theirs openshift master
 ### 2. Push changes
 
 ```sh
-git push
+git push origin master
 ```
 
 ### 3. That's it!
