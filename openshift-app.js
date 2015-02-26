@@ -21,11 +21,11 @@ nconf.overrides((function(){
 	}
 
 	if (process.env.OPENSHIFT_APP_DNS && process.env.OPENSHIFT_NODEJS_PORT) {
-		config.url = 'http://' + process.env.OPENSHIFT_APP_DNS + ':' + process.env.OPENSHIFT_NODEJS_PORT;
+		config.url = 'https://' + process.env.OPENSHIFT_APP_DNS + ':' + process.env.OPENSHIFT_NODEJS_PORT;
 
-		// OpenShift supports websockets but only on port 8000
+		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = {
-			address: 'http://' + process.env.OPENSHIFT_APP_DNS + ':8000'
+			address: 'wss://' + process.env.OPENSHIFT_APP_DNS + ':8443'
 		};
 	}
 
