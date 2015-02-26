@@ -45,7 +45,7 @@ fi
 json='{"admin:username": "'$name'", "admin:email": "'$mail'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
 
 # Run setup and redirect output to file, so we can search it later
-LOGFILE=openshift.log
+LOGFILE=openshift-nodebb.log
 node app --setup "$json" &> $LOGFILE
 
 # Output to whole thing to the client
