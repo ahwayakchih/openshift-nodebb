@@ -17,13 +17,15 @@ After that, you should have working `rhc` and `git` available on your system.
 
 ## Installation
 
-To install NodeBB, use following command lines step-by-step (they were tested using `bash` shell), without omitting any of them.
+To install NodeBB, follow these steps (they were tested using `bash` shell), without omitting any of them, on your local system (NOT on OpenShift side, through SSH).
 
 ### 1. Creating a new application
 
 ```sh
 rhc app create nodebb nodejs-0.10
 ```
+
+That should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory rest of the steps will not work as they should.
 
 ### 2. Adding database cartridge
 
@@ -43,8 +45,16 @@ rhc cartridge add mongodb-2.4 -a nodebb
 
 ### 3. Add NodeBB repository
 
+This will change current working directory to the one used for NodeBB.
+
 ```sh
-cd nodebb && git remote add upstream -m master https://github.com/NodeBB/NodeBB.git
+cd nodebb
+```
+
+This will attach remote NodeBB repository to your local repository.
+
+```sh
+git remote add upstream -m master https://github.com/NodeBB/NodeBB.git
 ```
 
 ### 4. Import NodeBB code to application
