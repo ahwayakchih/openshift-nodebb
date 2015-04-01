@@ -25,7 +25,7 @@ To install NodeBB, follow these steps (they were tested using `bash` shell), wit
 rhc app create nodebb nodejs-0.10
 ```
 
-That should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory rest of the steps will not work as they should.
+That should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
 
 ### 2. Adding database cartridge
 
