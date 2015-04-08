@@ -20,8 +20,8 @@ nconf.overrides((function(){
 		config.bind_address = process.env.OPENSHIFT_NODEJS_IP;
 	}
 
-	if (process.env.OPENSHIFT_APP_DNS && process.env.OPENSHIFT_NODEJS_PORT) {
-		config.url = 'https://' + process.env.OPENSHIFT_APP_DNS + ':' + process.env.OPENSHIFT_NODEJS_PORT;
+	if (process.env.OPENSHIFT_APP_DNS) {
+		config.url = 'https://' + process.env.OPENSHIFT_APP_DNS;
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = {

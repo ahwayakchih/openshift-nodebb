@@ -151,6 +151,18 @@ After a while, you should be able to see something like this at the end of a lon
 	^-============================================-^
 ```
 
+
+## Troubleshooting
+
+### 1. Restart application
+
+Sometimes OpenShift may not restart application after its repository is updated. In such case, your "https://nodebb-youropenshiftusername.rhcloud.com/" site may not work as it should. That can be fixed with a simple command:
+
+```sh
+rhc app restart
+```
+
+
 ## Acknowledgments
 
 This guide wouldn't be possible without instructions from

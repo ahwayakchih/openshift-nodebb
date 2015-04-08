@@ -27,6 +27,14 @@ if [ -f "openshift-app.js" ] ; then
 	mv openshift-app.js app.js
 fi
 
+# Symlink public/uploads to $OPENSHIFT_DATA_DIR
+if [ `readlink -f $OPENSHIFT_DATA_DIR` != `readlink -f public/uploads` ] ; then
+	echo "Pointing uploads directory to OPENSHIFT_DATA_DIR"
+	cp -R -n public/uploads/* $OPENSHIFT_DATA_DIR
+	rm -rf public/uploads
+	ln -s $OPENSHIFT_DATA_DIR public/uploads
+fi
+
 echo "Running setup"
 
 # Generate name
