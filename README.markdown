@@ -152,6 +152,45 @@ After a while, you should be able to see something like this at the end of a lon
 ```
 
 
+## Plugins
+
+If you just want to test things and look around, you can simply install/enable plugins through administration pages.
+
+If you want to keep NodeBB running on OpenShift, you should add plugins through your repository instead. That is because OpenShift will erase all files on server whenever you push changes to your repository.
+NodeBB can install plugins, but it will not add them to package.json file, nor it will commit changes to your repository.
+
+To keep plugins installed and working between updates, you can install them using `npm`. Follow the steps on your local system (NOT on OpenShift side, through SSH).
+
+### 1. Install plugin locally
+
+This will change current working directory to the one used for NodeBB. 
+
+```sh
+cd nodebb
+```
+
+This will install "Question and Answer" NodeBB plugin (https://github.com/psychobunny/nodebb-plugin-question-and-answer) locally and save information about it to the "package.json" file.
+You can change name of the module ("nodebb-plugin-question-and-answer" in this case), to install different plugin. Just remember to keep the "npm install --save" part of the command intact.
+
+```sh
+npm install --save nodebb-plugin-question-and-answer
+```
+
+### 2. Commit changes
+
+This will commit modifications to local repository.
+
+```sh
+git commit -a -m 'Added QA plugin'
+```
+
+### 3. Push changes
+
+```
+git push origin master
+```
+
+
 ## Troubleshooting
 
 ### 1. Restart application

@@ -27,12 +27,23 @@ if [ -f "openshift-app.js" ] ; then
 	mv openshift-app.js app.js
 fi
 
-# Symlink public/uploads to $OPENSHIFT_DATA_DIR
-if [ `readlink -f $OPENSHIFT_DATA_DIR` != `readlink -f public/uploads` ] ; then
-	echo "Pointing uploads directory to OPENSHIFT_DATA_DIR"
-	cp -R -n public/uploads/* $OPENSHIFT_DATA_DIR
+# Make sure there is /data/nodebb directory
+mkdir -p $OPENSHIFT_DATA_DIR/nodebb
+
+# Symlink public/uploads to $OPENSHIFT_DATA_DIR/nodebb/public-uploads
+if [ `readlink -f $OPENSHIFT_DATA_DIR/nodebb/public-uploads` != `readlink -f public/uploads` ] ; then
+	echo "Pointing uploads directory to [OPENSHIFT_DATA_DIR]/nodebb/public-uploads"
+	cp -a public/uploads $OPENSHIFT_DATA_DIR/nodebb/public-uploads
 	rm -rf public/uploads
-	ln -s $OPENSHIFT_DATA_DIR public/uploads
+	ln -s $OPENSHIFT_DATA_DIR/nodebb/public-uploads public/uploads
+fi
+
+# Symlink logs to $OPENSHIFT_DATA_DIR/nodebb/logs
+if [ `readlink -f $OPENSHIFT_DATA_DIR/nodebb/logs` != `readlink -f logs` ] ; then
+	echo "Pointing logs directory to [OPENSHIFT_DATA_DIR]/nodebb/logs"
+	cp -a logs $OPENSHIFT_DATA_DIR/nodebb/logs
+	rm -rf logs
+	ln -s $OPENSHIFT_DATA_DIR/nodebb/logs logs
 fi
 
 echo "Running setup"
