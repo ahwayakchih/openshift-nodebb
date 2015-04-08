@@ -156,10 +156,10 @@ After a while, you should be able to see something like this at the end of a lon
 
 If you just want to test things and look around, you can simply install/enable plugins through administration pages.
 
-If you want to keep NodeBB running on OpenShift, you should add plugins through your repository instead. That is because OpenShift will erase all files on server whenever you push changes to your repository.
-NodeBB can install plugins, but it will not add them to package.json file, nor it will commit changes to your repository.
+If you want to keep NodeBB running on OpenShift, you should add plugins through your repository instead. That is because OpenShift may erase all the files on server whenever you push changes to your repository.
+NodeBB can install plugins, but it will not add them to the "package.json" file, nor it will commit changes to your repository.
 
-To keep plugins installed and working between updates, you can install them using `npm`. Follow the steps on your local system (NOT on OpenShift side, through SSH).
+To keep plugins installed and working between updates, you can install them using `npm`. Follow these steps on your local system (NOT on OpenShift side, through SSH).
 
 ### 1. Install plugin locally
 
