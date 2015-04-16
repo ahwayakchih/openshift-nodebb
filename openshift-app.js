@@ -10,8 +10,8 @@ var nconf = require('nconf');
 nconf.overrides((function(){
 	'use strict';
 
-	var config = {}
-	  , url = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS;
+	var config = {};
+	var dns = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
 
 	if (process.env.OPENSHIFT_NODEJS_PORT) {
 		config.port = process.env.OPENSHIFT_NODEJS_PORT;
@@ -21,12 +21,12 @@ nconf.overrides((function(){
 		config.bind_address = process.env.OPENSHIFT_NODEJS_IP;
 	}
 
-	if (url) {
-		config.url = 'https://' + url;
+	if (dns) {
+		config.url = 'https://' + dns;
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = config['socket.io'] || {};
-		config['socket.io'].address = 'wss://' + url + ':8443';
+		config['socket.io'].address = 'wss://' + dns + ':8443';
 	}
 
 	// Redis
