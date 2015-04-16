@@ -11,7 +11,8 @@ nconf.overrides((function(){
 	'use strict';
 
 	var config = {};
-	var dns = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
+	// Fully Qualified Domain Name
+	var FQDN = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
 
 	if (process.env.OPENSHIFT_NODEJS_PORT) {
 		config.port = process.env.OPENSHIFT_NODEJS_PORT;
@@ -21,12 +22,12 @@ nconf.overrides((function(){
 		config.bind_address = process.env.OPENSHIFT_NODEJS_IP;
 	}
 
-	if (dns) {
-		config.url = 'https://' + dns;
+	if (FQDN) {
+		config.url = 'https://' + FQDN;
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = config['socket.io'] || {};
-		config['socket.io'].address = 'wss://' + dns + ':8443';
+		config['socket.io'].address = 'wss://' + FQDN + ':8443';
 	}
 
 	// Redis
