@@ -24,15 +24,8 @@ nconf.overrides((function(){
 		config.url = 'https://' + process.env.OPENSHIFT_APP_DNS;
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
-		var socketIoAddress = 'wss://' + process.env.OPENSHIFT_APP_DNS + ':8443';
-		
-		if (config['socket.io']) {
-			config['socket.io']['address'] = socketIoAddress;
-			
-		}
-		else {
-			config['socket.io'] = { 'address': socketIoAddress };
-		};
+		config['socket.io'] = config['socket.io'] || {};
+		config['socket.io'].address = 'wss://' + process.env.OPENSHIFT_APP_DNS + ':8443';
 	}
 
 	// Redis
