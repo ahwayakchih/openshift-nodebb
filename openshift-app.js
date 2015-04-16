@@ -1,7 +1,7 @@
 /*
- * This wile is a wrapper around original app.js from NodeBB.
+ * This file is a wrapper around original app.js from NodeBB.
  * It sets up config overrides using values from OpenShift environment,
- * and then requires original app.js (now called to _app.js) to let
+ * and then requires original app.js (now renamed to _app.js) to let
  * NodeBB continue it's magic.
  */
 var nconf = require('nconf');
