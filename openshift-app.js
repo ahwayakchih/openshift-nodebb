@@ -31,7 +31,7 @@ nconf.overrides((function(){
 	// Redis
 	if (process.env.OPENSHIFT_REDIS_HOST || process.env.REDIS_PASSWORD) {
 		config.database = config.database || 'redis';
-		config.redis = {};
+		config.redis = config.redis || {};
 
 		if (process.env.OPENSHIFT_REDIS_HOST) {
 			config.redis.host = process.env.OPENSHIFT_REDIS_HOST;
@@ -47,10 +47,10 @@ nconf.overrides((function(){
 	// MongoDB
 	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 		config.database = config.database || 'mongo';
-		config.mongo = {
-			// OpenShift seems to create MongoDB datbase with the same name as the application name.
-			database: process.env.OPENSHIFT_APP_NAME || 'nodebb'
-		};
+		config.mongo = config.mongo || {};
+
+		// OpenShift seems to create MongoDB datbase with the same name as the application name.
+		config.mongo.database = process.env.OPENSHIFT_APP_NAME || 'nodebb';
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
 			config.mongo.host = process.env.OPENSHIFT_MONGODB_DB_HOST;
