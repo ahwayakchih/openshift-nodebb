@@ -195,7 +195,7 @@ git push origin master
 
 ### 1. Restart application
 
-Sometimes OpenShift may not restart application after its repository is updated. In such case, your "https://nodebb-youropenshiftusername.rhcloud.com/" site may not work as it should. That can be fixed with a simple command:
+Sometimes OpenShift may forget to restart application after its repository is updated. In such case, your "https://nodebb-youropenshiftusername.rhcloud.com/" site may not work as it should. That can be fixed with a simple command:
 
 ```sh
 rhc app restart
