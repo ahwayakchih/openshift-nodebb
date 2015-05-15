@@ -201,6 +201,16 @@ Sometimes OpenShift may not restart application after its repository is updated.
 rhc app restart
 ```
 
+### 2. Missing "origin" remote
+
+It looks like sometimes, for reasons unknown at the moment of writing this text, remote "origin" is missing. In such case you can run:
+
+```sh
+git remote add origin `rhc app show nodebb | grep -oh "ssh://[^\s]\{1,\}\.rhcloud\.com/~/git/[^\s]*"`
+```
+
+This should add "origin" remote to your local git repository, pointing to your git repository on OpenShift servers.
+
 
 ## Acknowledgments
 
