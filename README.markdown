@@ -209,7 +209,7 @@ It looks like sometimes, for reasons unknown at the moment of writing this text,
 git remote add origin `rhc app show nodebb | grep -oh "ssh://[^\s]\{1,\}\.rhcloud\.com/~/git/[^\s]*"`
 ```
 
-This should add "origin" remote to your local git repository, pointing to your git repository on OpenShift servers.
+This should configure remote "origin" in your local git repository to point to your git repository on OpenShift servers.
 
 
 ## Acknowledgments
