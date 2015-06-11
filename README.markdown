@@ -43,6 +43,8 @@ To use MongoDB, run:
 rhc cartridge add mongodb-2.4 -a nodebb
 ```
 
+Only one of them is needed, there is no point in adding both databases.
+
 ### 3. Add NodeBB repository
 
 This will change current working directory to the one used for NodeBB.
@@ -59,11 +61,13 @@ git remote add upstream -m master https://github.com/NodeBB/NodeBB.git
 
 ### 4. Import NodeBB code to application
 
-This will import source code of NodeBB v0.6.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.6.x" with selected version name.
+This will import source code of NodeBB v0.7.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.7.x" with selected version number.
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.6.x
+git pull --no-edit -s recursive -X theirs upstream v0.7.x
 ```
+
+This guide was tested with `v0.6.x` and `v0.7.x`.
 
 ### 5. Add OpenShift-NodeBB repository
 
@@ -121,10 +125,10 @@ From now on, every time you want to update NodeBB, you can simply follow three s
 Update NodeBB source code:
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.6.x
+git pull --no-edit -s recursive -X theirs upstream v0.7.x
 ```
 
-If you want to jump to new version, just replace "v0.6.x" with different branch name. Just remember, that it will work only for uprade (it is possible to downgrade, just not with that single pull command).
+If you want to jump to new version, just replace "v0.7.x" with different branch name. Just remember, that it will work only for uprade (it is possible to downgrade, just not with that single pull command).
 
 Update OpenShift-NodeBB patches:
 
@@ -140,7 +144,7 @@ git push origin master
 
 ### 3. That's it!
 
-After a while, you should be able to see something like this at the end of a long text output from previous command:
+After a while (sometimes quite a long while), you should be able to see something like this at the end of a long text output from previous command:
 
 ```
 	.-============================================-.
