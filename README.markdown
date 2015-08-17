@@ -34,7 +34,7 @@ NodeBB supports both Redis and MongoDB databases. It's up to you to decide which
 To use Redis, run:
 
 ```sh
-rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/reflect?github=smarterclayton/openshift-redis-cart -a nodebb
+rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/reflect?github=transformatordesign/openshift-redis-cart -a nodebb
 ```
 
 To use MongoDB, run:
