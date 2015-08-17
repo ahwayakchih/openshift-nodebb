@@ -54,6 +54,9 @@ name=$OPENSHIFT_APP_NAME
 # Generate password
 pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1 | fold -w4 | paste -sd\- -`
 
+# Generate NodeBB secret
+secret=`uuidgen -r`
+
 # Try to get e-mail, if not found, use fake address
 mail=$OPENSHIFT_LOGIN
 if [ "$mail" = "" ] ; then
@@ -61,7 +64,7 @@ if [ "$mail" = "" ] ; then
 fi
 
 # Prepare JSON
-json='{"admin:username": "'$name'", "admin:email": "'$mail'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
+json='{"secret": "'$secret'", "admin:username": "'$name'", "admin:email": "'$mail'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
 
 # Run setup and redirect output to file, so we can search it later
 LOGFILE="openshift-nodebb.log"
