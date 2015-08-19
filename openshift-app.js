@@ -11,6 +11,7 @@ nconf.overrides((function(){
 	'use strict';
 
 	var config = {};
+
 	// Fully Qualified Domain Name
 	var FQDN = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
 
@@ -51,7 +52,7 @@ nconf.overrides((function(){
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
 
-		// OpenShift seems to create MongoDB datbase with the same name as the application name.
+		// OpenShift seems to create MongoDB database with the same name as the application name.
 		config.mongo.database = process.env.OPENSHIFT_APP_NAME || 'nodebb';
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
