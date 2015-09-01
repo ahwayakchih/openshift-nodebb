@@ -225,7 +225,7 @@ rhc set-env OPENSHIFT_NODEBB_WS_USE_APP_DNS=true -a nodebb
 
 ```
 
-This will make socket.io connections insecure instead (thus not requiring a valid SSL certificate):
+This will make configuration to keep using your custom domain, but connections will be insecure instead:
 
 ```sh
 rhc set-env OPENSHIFT_NODEBB_WS_USE_INSECURE=true -a nodebb
