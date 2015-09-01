@@ -289,4 +289,4 @@ https://developers.openshift.com/en/managing-action-hooks.html
 
 It also wouldn't be created if not for numerous questions and conversations with Sylwester Cyba from http://nhl.pl/.
 
-Part describing custom domain setup was created thanks to Benderwan (https://github.com/Benderwan) asking reporting problem and testing solutions (https://github.com/ahwayakchih/openshift-nodebb/issues/7).
+Part describing custom domain setup was created thanks to Benderwan (https://github.com/Benderwan) reporting problem and testing solutions (https://github.com/ahwayakchih/openshift-nodebb/issues/7).
