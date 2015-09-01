@@ -11,9 +11,16 @@ nconf.overrides((function(){
 	'use strict';
 
 	var config = {};
-
 	// Fully Qualified Domain Name
 	var FQDN = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
+	// Separate FQDN for websockets (socket.io)
+	var WSFQDN = FQDN;
+
+	// Allow to override FQDN used for socket.io and enforce using OpenShift's domain
+	// which might be helpful when using custom domain name without valid SSL certificate
+	if (process.env.OPENSHIFT_NODEBB_WS_USE_APP_DNS) {
+		WSFQDN = process.env.OPENSHIFT_APP_DNS || FQDN;
+	}
 
 	if (process.env.OPENSHIFT_NODEJS_PORT) {
 		config.port = process.env.OPENSHIFT_NODEJS_PORT;
@@ -28,7 +35,14 @@ nconf.overrides((function(){
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = config['socket.io'] || {};
-		config['socket.io'].address = 'wss://' + FQDN + ':8443';
+
+		// Allow to enforce using insecure websockets as a workaround for custom domain without valid SSL certificate
+		if (process.env.OPENSHIFT_NODEBB_WS_USE_INSECURE) {
+			config['socket.io'].address = 'ws://' + WSFQDN + ':8000';
+		}
+		else {
+			config['socket.io'].address = 'wss://' + WSFQDN + ':8443';
+		}
 	}
 
 	// Redis
@@ -52,7 +66,7 @@ nconf.overrides((function(){
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
 
-		// OpenShift seems to create MongoDB database with the same name as the application name.
+		// OpenShift seems to create MongoDB datbase with the same name as the application name.
 		config.mongo.database = process.env.OPENSHIFT_APP_NAME || 'nodebb';
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {

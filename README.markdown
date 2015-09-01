@@ -194,6 +194,70 @@ git commit -a -m 'Added QA plugin'
 git push origin master
 ```
 
+## Custom domain name
+
+If you want to use your own domain name, instead of subdomain in domain provided by OpenShift, you can add alias to your application:
+
+```sh
+rhc alias add nodebb example.com
+```
+
+Of course, instead of `example.com` enter your own domain name. You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html.
+
+### 1. Add domain name to NodeBB
+
+This will make openshift-nodebb installation work correctly with your custom domain name.
+
+```sh
+rhc set-env OPENSHIFT_APP_DNS_ALIAS=example.com -a nodebb
+```
+
+Again, use your own domain name in place of `example.com`.
+
+### 2. Optional no-SSL-certificate workaround
+
+If you do not have certificate signed by widely accepted certificate authority, you can either make NodeBB connect websockets to your OpenShift subdomain (which provides valid, accepted SSL certificate), or disable secure websockets.
+
+This will make configuration to use OpenShift's subdomain for socket.io connections:
+
+```sh
+rhc set-env OPENSHIFT_NODEBB_WS_USE_APP_DNS=true -a nodebb
+
+```
+
+This will make socket.io connections insecure instead (this not requiring valid SSL certificate):
+
+```sh
+rhc set-env OPENSHIFT_NODEBB_WS_USE_INSECURE=true -a nodebb
+```
+
+Only one of those is needed and only when you want to use custom domain name. There is not much point in using both.
+
+### 3. Restart NodeBB
+
+This will restart your NodeBB installation using updated configuration variables.
+
+```sh
+rhc app restart nodebb
+```
+
+### 4. Test and retry
+
+If option you selected in step 2 did not work, you can repeat steps 2 and 3 after removing previously selected option.
+
+This will remove first option from step 2.
+
+```sh
+rhc unset-env OPENSHIFT_NODEBB_WS_USE_APP_DNS
+```
+
+This will remove second option from step 2.
+
+```sh
+rhc unset-env OPENSHIFT_NODEBB_WS_USE_INSECURE
+```
+
+Now you can go back to step 2 and try different option.
 
 ## Troubleshooting
 
@@ -223,4 +287,6 @@ https://github.com/NodeBB/nodebb-english/blob/master/installing/cloud/openshift.
 and OpenShift documentation and examples from
 https://developers.openshift.com/en/managing-action-hooks.html
 
-It also wouldn't be created if not for the questions and conversations with Sylwester Cyba from http://nhl.pl/.
+It also wouldn't be created if not for numerous questions and conversations with Sylwester Cyba from http://nhl.pl/.
+
+Part describing custom domain setup was created thanks to Benderwan (https://github.com/Benderwan) asking reporting problem and testing solutions (https://github.com/ahwayakchih/openshift-nodebb/issues/7).
