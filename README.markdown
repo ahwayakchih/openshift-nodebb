@@ -61,13 +61,13 @@ git remote add upstream -m master https://github.com/NodeBB/NodeBB.git
 
 ### 4. Import NodeBB code to application
 
-This will import source code of NodeBB v0.7.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.7.x" with selected version number.
+This will import source code of NodeBB v0.8.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.8.x" with selected version number.
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.7.x
+git pull --no-edit -s recursive -X theirs upstream v0.8.x
 ```
 
-This guide was tested with `v0.6.x` and `v0.7.x`.
+This guide was tested with `v0.6.x`, `v0.7.x` and `v0.8.x` branches.
 
 ### 5. Add OpenShift-NodeBB repository
 
@@ -125,10 +125,10 @@ From now on, every time you want to update NodeBB, you can simply follow three s
 Update NodeBB source code:
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.7.x
+git pull --no-edit -s recursive -X theirs upstream v0.8.x
 ```
 
-If you want to jump to new version, just replace "v0.7.x" with different branch name. Just remember, that it will work only for uprade (it is possible to downgrade, just not with that single pull command).
+If you want to jump to new version, just replace "v0.8.x" with different branch name. Just remember, that it will work only for uprade (it is possible to downgrade, just not with that single pull command).
 
 Update OpenShift-NodeBB patches:
 
