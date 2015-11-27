@@ -17,6 +17,10 @@ for changeset in `ls patches/openshift-$version*.diff` ; do
 	fi
 done
 
+# Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
+# TODO: this is too generic, it may replace other commands in the file.
+sed -i 's/node loader.js/.\/nodebb start/g' package.json
+
 # Override app.js
 # We have to move original and replace it with our "wrapper"
 # because NodeBB calls hardcoded "app.js" in some cases
