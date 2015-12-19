@@ -37,11 +37,16 @@ To use Redis, run:
 rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/reflect?github=transformatordesign/openshift-redis-cart -a nodebb
 ```
 
-To use MongoDB, run:
+To use Openshift default MongoDB, run:
 
 ```sh
 rhc cartridge add mongodb-2.4 -a nodebb
 ```
+
+ To use third party MongoDB service such as MongoLab,
+ 
+ go to https://marketplace.openshift.com/login and add MongoLab subscription and connect it to the nodeBB app
+
 
 Only one of them is needed, there is no point in adding both databases.
 
