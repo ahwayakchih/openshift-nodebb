@@ -82,7 +82,19 @@ nconf.overrides((function(){
 			config.mongo.password = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
 		}
 	}
-
+	// mongolab
+	if(process.env.MONGOLAB_URI){
+		config.database = config.database || 'mongo';
+		config.mongo = config.mongo || {};
+		
+		var MongoLabURL = process.env.MONGOLAB_URI;
+		
+		config.mongo.database = MongoLabURL.split('mongolab.com:')[1].split('/')[1];
+		config.mongo.host = MongoLabURL.split(':')[2].split('@')[1];
+		config.mongo.port = MongoLabURL.split('mongolab.com:')[1].split('/')[0];
+		config.mongo.username = MongoLabURL.split(':')[1].replace('//','');
+		config.mongo.password = MongoLabURL.split(':')[2].split('@')[0];
+	}
 	return config;
 })());
 
