@@ -5,6 +5,7 @@
  * NodeBB continue it's magic.
  */
 var nconf = require('nconf');
+var url = require('url');
 
 // Set overrides from OpenShift environment
 nconf.overrides((function(){
@@ -82,19 +83,22 @@ nconf.overrides((function(){
 			config.mongo.password = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
 		}
 	}
-	// mongolab
-	if(process.env.MONGOLAB_URI){
+
+	// MongoLab
+	if (process.env.MONGOLAB_URI) {
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
 		
-		var MongoLabURL = process.env.MONGOLAB_URI;
+		var mongolabURL = url.parse(process.env.MONGOLAB_URI);
+		mongolabURL.auth = mongolabURL.auth.split(':');
 		
-		config.mongo.database = MongoLabURL.split('mongolab.com:')[1].split('/')[1];
-		config.mongo.host = MongoLabURL.split(':')[2].split('@')[1];
-		config.mongo.port = MongoLabURL.split('mongolab.com:')[1].split('/')[0];
-		config.mongo.username = MongoLabURL.split(':')[1].replace('//','');
-		config.mongo.password = MongoLabURL.split(':')[2].split('@')[0];
+		config.mongo.host = mongolabURL.hostname;
+		config.mongo.port = mongolabURL.port;
+		config.mongo.username = mongolabURL.auth[0];
+		config.mongo.password = mongolabURL.auth[1];
+		config.mongo.database = mongolabURL.pathname.substring(1);
 	}
+
 	return config;
 })());
 
