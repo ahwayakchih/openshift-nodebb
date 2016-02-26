@@ -9,8 +9,8 @@ var fs = require('fs');
 var packageFilePath = './package.json';
 var package = JSON.parse(fs.readFileSync(packageFilePath));
 
-var scriptStart = 'nodebb start';
-var scriptStop  = 'nodebb stop';
+var scriptStart = './nodebb start';
+var scriptStop  = './nodebb stop';
 
 var needsSave = false;
 
