@@ -137,5 +137,6 @@ else
 	rm $LOGFILE
 fi
 
-# Make sure, that node.env will know to run app.js
-sed -i 's/server.js/app.js/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
+# Make sure, that node.env will know to run nodebb
+sed -i 's/server.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
+sed -i 's/app.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
