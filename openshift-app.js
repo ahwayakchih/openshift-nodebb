@@ -7,7 +7,7 @@
 var nconf = require('nconf');
 var url   = require('url');
 
-var testSSL = require('.openshift/tools/test-ssl.js');
+var testSSL = require('./.openshift/tools/test-ssl.js');
 
 var IP   = process.env.OPENSHIFT_NODEJS_IP   || null;
 var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
