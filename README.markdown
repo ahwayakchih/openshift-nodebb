@@ -276,7 +276,7 @@ rhc app restart
 It looks like sometimes, for reasons unknown at the moment of writing this text, remote "origin" is missing. In such case you can run:
 
 ```sh
-git remote add origin `rhc app show nodebb | grep -oh "ssh://[^\s]\{1,\}\.rhcloud\.com/~/git/[^\s]*"`
+git remote add origin `rhc app show nodebb | grep -oh "ssh://\S\{1,\}\.rhcloud.com/~/git/\S*"`
 ```
 
 This should configure remote "origin" in your local git repository to point to your git repository on OpenShift servers.
