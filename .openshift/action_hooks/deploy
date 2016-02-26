@@ -19,7 +19,7 @@ for changeset in `ls patches/openshift-$version*.diff` ; do
 done
 
 # Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
-./.openshift/lib/ensure-package-scripts.js
+./.openshift/tools/ensure-package-scripts.js
 
 # Override app.js
 # We have to move original and replace it with our "wrapper"
