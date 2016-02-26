@@ -120,7 +120,7 @@ Use that new admin login and password to login into your new NodeBB installation
 
 ## Updates
 
-From now on, every time you want to update NodeBB, you can simply follow three steps.
+From now on, every time you want to update NodeBB, you can simply follow three steps. Follow them on your local system (NOT on OpenShift side, through SSH).
 
 ### 1. Pull changes
 
@@ -190,25 +190,42 @@ This will commit modifications to local repository.
 git commit -a -m 'Added QA plugin'
 ```
 
+Of course, instead of `Added QA plugin` you can write any other one-liner that explains what was changed.
+
 ### 3. Push changes
 
 ```
 git push origin master
 ```
 
+
 ## Custom domain name
 
-If you want to use your own domain name, instead of subdomain in domain provided by OpenShift, you can add alias to your application:
+If you want to use your own domain name, instead of subdomain in domain provided by OpenShift, you can add alias to your application.
+There is only one ceveat: to use HTTPS with your own domain name, you have to upgrade your OpenShift plan. Otherwise there is no way to set up correct SSL certificate and you will keep bumping into problems.
+
+So in short, here is when you can use HTTPS:
+
+- OpenShift domain
+- Custom domain only on premium plan
+
+There's no way for NodeBB to work 100% correctly with both HTTPS and custom domain name on a free plan.
+
+You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html
+
+As usual, follow these steps on your local system (NOT on OpenShift side, through SSH).
+
+### 1. Add domain name to application
 
 ```sh
 rhc alias add nodebb example.com
 ```
 
-Of course, instead of `example.com` enter your own domain name. You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html.
+Of course, instead of `example.com` enter your own domain name.
 
-### 1. Add domain name to NodeBB
+### 2. Add domain name to NodeBB
 
-This will make openshift-nodebb installation work correctly with your custom domain name.
+This will make NodeBB installation work correctly with your custom domain name.
 
 ```sh
 rhc set-env OPENSHIFT_APP_DNS_ALIAS=example.com -a nodebb
@@ -216,50 +233,30 @@ rhc set-env OPENSHIFT_APP_DNS_ALIAS=example.com -a nodebb
 
 Again, use your own domain name in place of `example.com`.
 
-### 2. Optional no-SSL-certificate workaround
+### 3. Optional SSL
 
-If you do not have certificate signed by widely accepted certificate authority, you can either make NodeBB connect websockets to your OpenShift subdomain (which provides valid, accepted SSL certificate), or disable secure websockets.
+If your account is on one of paid "premium" plans, you can add SSL certificate to enable valid usage of HTTPS with your custom domain name.
+You can get free, widely accepted certificates from https://letsencrypt.org/.
 
-This will make configuration to use OpenShift's subdomain for socket.io connections:
-
-```sh
-rhc set-env OPENSHIFT_NODEBB_WS_USE_APP_DNS=true -a nodebb
-
-```
-
-This will make configuration to keep using your custom domain, but connections will be insecure instead:
+Once you have a key and a certificate, this will add them to application:
 
 ```sh
-rhc set-env OPENSHIFT_NODEBB_WS_USE_INSECURE=true -a nodebb
+rhc alias update-cert nodebb example.com --certificate cert_file --private_key key_file
 ```
 
-Only one of those is needed and only when you want to use custom domain name. There is not much point in using both.
+Use your own domain name in place of `example.com`, and correct files in place of `cert_file` and `key_file`.
+Read more about setting up SSL at https://developers.openshift.com/en/managing-domains-ssl.html#_command_line_rhc_3
 
-### 3. Restart NodeBB
+You can add certificates at some point in future. Just reember to restart application after that.
 
-This will restart your NodeBB installation using updated configuration variables.
+### 4. Restart NodeBB
+
+This will restart your NodeBB installation, so it can use updated configuration variables.
 
 ```sh
 rhc app restart nodebb
 ```
 
-### 4. Test and retry
-
-If option you selected in step 2 did not work, you can repeat steps 2 and 3 after removing previously selected option.
-
-This will remove first option from step 2.
-
-```sh
-rhc unset-env OPENSHIFT_NODEBB_WS_USE_APP_DNS
-```
-
-This will remove second option from step 2.
-
-```sh
-rhc unset-env OPENSHIFT_NODEBB_WS_USE_INSECURE
-```
-
-Now you can go back to step 2 and try different option.
 
 ## Troubleshooting
 

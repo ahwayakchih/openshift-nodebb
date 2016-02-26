@@ -61,10 +61,19 @@ pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1 | fold -w4 | past
 # Generate NodeBB secret
 secret=`uuidgen -r`
 
+# Select domain name to be used
+FQDN=$OPENSHIFT_APP_DNS_ALIAS
+if [ "$FQDN" = "" ] ; then
+	FQDN=$OPENSHIFT_APP_DNS
+fi
+
+# Select HTTP by default and HTTPS if SSL is working
+PROTOCOL="http"`./.openshift/tools/test-ssl.js $OPENSHIFT_NODEJS_PORT $FQDN && echo -n "s"`
+
 # Try to get e-mail, if not found, use fake address
 mail=$OPENSHIFT_LOGIN
 if [ "$mail" = "" ] ; then
-	mail="$name@$OPENSHIFT_APP_DNS"
+	mail="$name@$FQDN"
 fi
 
 # Prepare JSON
@@ -107,7 +116,7 @@ else
 		client_result ".    password: $pass"
 		client_result "."
 		client_result ".  You can login at:"
-		client_result ".  https://$OPENSHIFT_APP_DNS/login"
+		client_result ".  $PROTOCOL://$FQDN/login"
 		client_result "."
 		client_result ".  WARNING: Be sure to change admin e-mail and"
 		client_result ".           password as soon as possible!"
@@ -120,7 +129,7 @@ else
 		client_result ".  Setup finished."
 		client_result "."
 		client_result ".  You can view your NodeBB at:"
-		client_result ".  https://$OPENSHIFT_APP_DNS/"
+		client_result ".  $PROTOCOL://$FQDN/"
 		client_result "^-============================================-^"
 		client_result ""
 	fi

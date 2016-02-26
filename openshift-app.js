@@ -5,44 +5,48 @@
  * NodeBB continue it's magic.
  */
 var nconf = require('nconf');
-var url = require('url');
+var url   = require('url');
 
-// Set overrides from OpenShift environment
-nconf.overrides((function(){
+var testSSL = require('.openshift/tools/test-ssl.js');
+
+var IP   = process.env.OPENSHIFT_NODEJS_IP   || null;
+var PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+
+// Fully Qualified Domain Name
+var FQDN = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
+
+// Check is SSL is working on selected domain name
+testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 	'use strict';
 
+	// HTTPS or HTTP and WSS or WS
+	var USE_SSL = err ? false : true;
+
+	// Prepare config overrides
 	var config = {};
-	// Fully Qualified Domain Name
-	var FQDN = process.env.OPENSHIFT_APP_DNS_ALIAS || process.env.OPENSHIFT_APP_DNS || false;
-	// Separate FQDN for websockets (socket.io)
-	var WSFQDN = FQDN;
 
-	// Allow to override FQDN used for socket.io and enforce using OpenShift's domain
-	// which might be helpful when using custom domain name without valid SSL certificate
-	if (process.env.OPENSHIFT_NODEBB_WS_USE_APP_DNS) {
-		WSFQDN = process.env.OPENSHIFT_APP_DNS || FQDN;
+	// Port number
+	if (PORT) {
+		config.port = PORT;
 	}
 
-	if (process.env.OPENSHIFT_NODEJS_PORT) {
-		config.port = process.env.OPENSHIFT_NODEJS_PORT;
+	// Bind to IP address
+	if (IP) {
+		config.bind_address = IP;
 	}
 
-	if (process.env.OPENSHIFT_NODEJS_IP) {
-		config.bind_address = process.env.OPENSHIFT_NODEJS_IP;
-	}
-
+	// Default domain name
 	if (FQDN) {
-		config.url = 'https://' + FQDN;
+		config.url = (USE_SSL ? 'https' : 'http') + '://' + FQDN;
 
 		// OpenShift supports websockets but only on ports 8000 and 8443
 		config['socket.io'] = config['socket.io'] || {};
 
-		// Allow to enforce using insecure websockets as a workaround for custom domain without valid SSL certificate
-		if (process.env.OPENSHIFT_NODEBB_WS_USE_INSECURE) {
-			config['socket.io'].address = 'ws://' + WSFQDN + ':8000';
+		if (USE_SSL) {
+			config['socket.io'].address = 'wss://' + FQDN + ':8443';
 		}
 		else {
-			config['socket.io'].address = 'wss://' + WSFQDN + ':8443';
+			config['socket.io'].address = 'ws://' + FQDN + ':8000';
 		}
 	}
 
@@ -99,7 +103,14 @@ nconf.overrides((function(){
 		config.mongo.database = mongolabURL.pathname.substring(1);
 	}
 
-	return config;
-})());
+	// Set overrides from OpenShift environment
+	nconf.overrides(config);
 
-require('./_app.js');
+	// Cleanup
+	config = null;
+	testSSL = null;
+	IP = PORT = FQDN = null;
+
+	// Continue booting NodeBB
+	setImmediate(require.bind(null, './_app.js'));
+});

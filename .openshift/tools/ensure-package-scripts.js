@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * This script will read package.json data and ensure that it has `scripts.start` ans `scripts.stop`
+ * This script will read package.json data and ensure that it has `scripts.start` and `scripts.stop`
  * set correctly. If it has to change anything, it will save updated package.json file.
  */
 var fs = require('fs');
