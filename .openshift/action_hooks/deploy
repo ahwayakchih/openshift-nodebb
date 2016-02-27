@@ -140,7 +140,7 @@ function onbb_setup_nodebb () {
 	# Check result by looking for specific text
 	# Would be better if NodeBB's setup would exit with code
 	# but it does not, so we use this fragile workaround.
-	if cat $LOGFILE | grep -q "There was a problem completing NodeBB\|Error: listen EADDRINUSE" ; then
+	if cat $LOGFILE | grep -q "There was a problem completing NodeBB\|NodeBB Setup Aborted\|Error: listen EADDRINUSE" ; then
 		# Failed
 		client_result ""
 		client_result ".-============================================-."
