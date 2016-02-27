@@ -107,7 +107,7 @@ After a while, you should be able to see something like this at the end of a lon
 	.    login   : nodebb
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
-	.  You can login at:
+	.  You can log in at:
 	.  https://nodebb-youropenshiftusername.rhcloud.com/login
 	.
 	.  WARNING: Be sure to change admin e-mail and
@@ -115,7 +115,7 @@ After a while, you should be able to see something like this at the end of a lon
 	^-============================================-^
 ```
 
-Use that new admin login and password to login into your new NodeBB installation, and change them to something suitable for you.
+Use that new admin login and password to log in to your new NodeBB installation, and change them to something suitable for you.
 
 
 ## Updates
