@@ -90,9 +90,12 @@ function onbb_setup_environment () {
 	local configFilePath="$NODEBB_DATA_DIR/config.json"
 	if [ `readlink -f $configFilePath` != `readlink -f config.json` ] ; then
 		echo "Pointing config.json to [OPENSHIFT_DATA_DIR]/nodebb/config.json"
-		cp -a config.json "$configFilePath"
+		if [ -f config.json ] ; then
+			cp -a config.json "$configFilePath"
+		else
+			touch "$configFilePath"
+		fi
 		rm -rf config.json
-		touch "$configFilePath"
 		ln -s "$configFilePath" config.json
 	fi
 }
