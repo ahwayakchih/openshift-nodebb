@@ -201,7 +201,7 @@ function onbb_setup () {
 
 	echo "Configuring NodeBB $version for OpenShift"
 
-	onbb_setup_sourcecode && onbb_setup_environment && onbb_setup_nodebb && return 0
+	onbb_setup_sourcecode $version && onbb_setup_environment && onbb_setup_nodebb && return 0
 
 	# We'll get here only if something went wrong above
 	# Return error
