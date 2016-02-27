@@ -21,6 +21,13 @@ done
 # Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
 ./.openshift/tools/ensure-package-scripts.js
 
+# Make sure, that node.env, if it exists, will know to run nodebb
+# This is needed only for legacy support and only on OpenShift's default nodejs-0.10 cartridge
+if [ -f "$OPENSHIFT_NODEJS_DIR/configuration/node.env" ] ; then
+	sed -i 's/server.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
+	sed -i 's/app.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
+fi
+
 # Override app.js
 # We have to move original and replace it with our "wrapper"
 # because NodeBB calls hardcoded "app.js" in some cases
@@ -136,7 +143,3 @@ else
 
 	rm $LOGFILE
 fi
-
-# Make sure, that node.env will know to run nodebb
-sed -i 's/server.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
-sed -i 's/app.js/nodebb/g' $OPENSHIFT_NODEJS_DIR/configuration/node.env
