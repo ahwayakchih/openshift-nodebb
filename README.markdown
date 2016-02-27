@@ -34,7 +34,7 @@ NodeBB supports both Redis and MongoDB databases. It's up to you to decide which
 To use local Redis, run:
 
 ```sh
-rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/reflect?github=transformatordesign/openshift-redis-cart -a nodebb
+rhc cartridge add http://cartreflect-claytondev.rhcloud.com/reflect?github=transformatordesign/openshift-redis-cart -a nodebb
 ```
 
 To use local MongoDB, run:
@@ -123,6 +123,12 @@ Use that new admin login and password to log in to your new NodeBB installation,
 From now on, every time you want to update NodeBB, you can simply follow three steps. Follow them on your local system (NOT on OpenShift side, through SSH).
 
 ### 1. Pull changes
+
+This will change current working directory to the one used for NodeBB. 
+
+```sh
+cd nodebb
+```
 
 Update NodeBB source code:
 
@@ -228,7 +234,7 @@ Of course, instead of `example.com` enter your own domain name.
 This will make NodeBB installation work correctly with your custom domain name.
 
 ```sh
-rhc set-env OPENSHIFT_APP_DNS_ALIAS=example.com -a nodebb
+rhc env set OPENSHIFT_APP_DNS_ALIAS=example.com -a nodebb
 ```
 
 Again, use your own domain name in place of `example.com`.
@@ -247,7 +253,7 @@ rhc alias update-cert nodebb example.com --certificate cert_file --private_key k
 Use your own domain name in place of `example.com`, and correct files in place of `cert_file` and `key_file`.
 Read more about setting up SSL at https://developers.openshift.com/en/managing-domains-ssl.html#_command_line_rhc_3
 
-You can add certificates at some point in future. Just reember to restart application after that.
+You can add certificates at some point in future. Just remember to restart application after that.
 
 ### 4. Restart NodeBB
 
@@ -256,6 +262,8 @@ This will restart your NodeBB installation, so it can use updated configuration 
 ```sh
 rhc app restart nodebb
 ```
+
+If later you decide to change domain name, simply repeat steps 1 to 4.
 
 
 ## Troubleshooting
@@ -268,15 +276,41 @@ Sometimes OpenShift may forget to restart application after its repository is up
 rhc app restart
 ```
 
-### 2. Missing "origin" remote
+### 2. Add missing "origin" remote
 
 It looks like sometimes, for reasons unknown at the moment of writing this text, remote "origin" is missing. In such case you can run:
+
+```sh
+cd nodebb
+```
+
+and then:
 
 ```sh
 git remote add origin `rhc app show nodebb | grep -oh "ssh://\S\{1,\}\.rhcloud.com/~/git/\S*"`
 ```
 
 This should configure remote "origin" in your local git repository to point to your git repository on OpenShift servers.
+
+### 3. Remove custom domain name
+
+If you want to remove custom domain name, this will stop NodeBB from using it:
+
+```sh
+rhc env set OPENSHIFT_APP_DNS_ALIAS
+```
+
+If you did add certificate, this will remove it:
+
+```sh
+rhc alias delete-cert nodebb example.com
+```
+
+Finally, this will stop OpenShift from using your domain name:
+
+```sh
+rhc alias remove nodebb example.com
+```
 
 
 ## Acknowledgments
