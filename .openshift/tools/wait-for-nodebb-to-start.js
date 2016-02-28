@@ -58,6 +58,8 @@ function waitForNodeBBToStart (timeout, callback) {
 			return;
 		}
 
+		console.error(data.toString('utf8'));
+
 		tail.kill();
 		tail = null;
 	});
