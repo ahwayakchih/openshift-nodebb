@@ -315,6 +315,8 @@ When something goes wrong with installation or update, you should see something 
 	^-============================================-^
 ```
 
+It may be either "Setup failed" or "NodeBB failed to start".
+
 Path to logfile is local to OpenShift server, so to check that file you can either log in to server through SSH or copy file to your local directory.
 
 This will copy log file from OpenShift server to your local directory.
@@ -325,19 +327,7 @@ rhc scp nodebb download ./ app-root/repo/logs/openshift-nodebb-setup.log
 
 Use whatever path was mentioned in error message in place of "logs/logs/openshift-nodebb-setup.log".
 
-This will read and output downloaded file (press `q` key to quit, `ENTER` to scroll down).
-
-```sh
-more openshift-nodebb-setup.log
-```
-
-If there is an error about `EADDRINUSE` near the end of the log file, you can try to kill NodeBB manually using following commands:
-
-```sh
-rhc ssh nodebb
-kill `lsof | grep :$OPENSHIFT_NODEJS_PORT | awk '{print $2}'`
-exit
-```
+Once you have the log file, you can either check it yourself or post an issue at https://github.com/ahwayakchih/openshift-nodebb/issues (describing the steps you made and copying and pasting content of the logfile).
 
 ### 2. Restart application
 

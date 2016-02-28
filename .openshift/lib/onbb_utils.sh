@@ -65,7 +65,7 @@ function onbb_echo_result_of_setup_success () {
 		client_result ".-============================================-."
 		client_result ".  Setup finished."
 		client_result "."
-		client_result ".  Please wait for it to start."
+		client_result ".  Please wait for NodeBB to start."
 		client_result "^-============================================-^"
 		client_result ""
 	else
@@ -79,7 +79,7 @@ function onbb_echo_result_of_setup_success () {
 		client_result ".    login   : $name"
 		client_result ".    password: $pass"
 		client_result "."
-		client_result ".  Please wait for it to start."
+		client_result ".  Please wait for NodeBB to start."
 		client_result "."
 		client_result ".  WARNING: Be sure to change admin e-mail and"
 		client_result ".           password after first log in!"
@@ -102,7 +102,7 @@ function onbb_echo_result_of_start_failed () {
 
 	client_result ""
 	client_result ".-============================================-."
-	client_result ".  NodeBB did not start for some reason."
+	client_result ".  NodeBB failed to start for some reason."
 	client_result "."
 	client_result ".  Check logfile for more information:"
 	client_result ".  logs/output.log"
@@ -237,17 +237,64 @@ function onbb_setup_environment () {
 }
 
 #
-# Watch NodeBB log until it says it is listening for connections.
+# Ensure that NodeBB is stopped. Wait until it is or time runs up
 #
-# @param {number} [timeout=120000]   In milliseconds
+# @param {number} [timeout=2]   In seconds
 #
-function onbb_wait_until_ready () {
-	local milliseconds=$1
+function onbb_wait_until_stopped () {
+	local seconds=$1
 
-	if [ "$milliseconds" = "" ] ; then
-		# 2 minutes
-		milliseconds=120000
+	if [ "$seconds" = "" ] ; then
+		seconds=2
 	fi
 
-	${OPENSHIFT_REPO_DIR}.openshift/tools/wait-for-nodebb-to-start.js "$milliseconds" || return 1
+	# Get PID of process that still listens on our port
+	local PID=$(lsof | grep "$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT" | grep LISTEN | awk '{print $2}')
+
+	# Return early if it stopped already
+	if [ "$PID" = "" ] ; then
+		return 0
+	fi
+
+	# Return error if there is no time left
+	if [ "$seconds" -le "0" ] ; then
+		return 1
+	fi 
+
+	# Stop it gracefully if we have more than a second of time left
+	if [ "$seconds" -gt "1" ] ; then
+		local d=`pwd`
+		cd "$OPENSHIFT_REPO_DIR"
+		npm stop 2>/dev/null
+		cd "$d"
+
+		sleep 1
+
+		onbb_wait_until_stopped $(echo "$seconds - 1" | bc) || return 1
+		return 0
+	fi
+
+	# Only one second left - KILL!
+	kill "$PID" || return 1
+	onbb_wait_until_stopped $(echo "$seconds - 1" | bc) || return 1
+
+	return 0
+}
+
+#
+# Watch NodeBB log until it says it is listening for connections.
+#
+# @param {number} [timeout=120]   In seconds
+#
+function onbb_wait_until_ready () {
+	local seconds=$1
+
+	if [ "$seconds" = "" ] ; then
+		# 2 minutes
+		seconds=120
+	fi
+
+	local milliseconds=$(echo "$seconds * 1000" | bc)
+
+	${OPENSHIFT_REPO_DIR}.openshift/tools/wait-for-nodebb-to-start.js $milliseconds || return 1
 }

@@ -1,5 +1,6 @@
 #!/bin/bash
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
+source "${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh"
 
 # Make sure NodeBB is stopped
-npm stop 2>/dev/null || exit 0
+onbb_wait_until_stopped 3 || exit 1
