@@ -2,5 +2,6 @@
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
 source "${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh"
 
-onbb_wait_until_ready 120 || (onbb_echo_result_of_start_failed && exit 1) || exit 1
+# Hide stdout, keep stderr, wait, output result
+onbb_wait_until_ready 120 >/dev/null || (onbb_echo_result_of_start_failed && exit 1) || exit 1
 onbb_echo_result_of_start_success
