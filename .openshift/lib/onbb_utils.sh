@@ -248,8 +248,15 @@ function onbb_wait_until_stopped () {
 		seconds=2
 	fi
 
-	# Get PID of process that still listens on our port
-	local PID=$(lsof | grep "$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT" | grep -v COMMAND | grep LISTEN | awk '{print $2}')
+	local running=`curl -I "http://$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT/" 2>/dev/null`
+
+	# Return early if it stopped already
+	if [ "$running" = "" ] ; then
+		return 0
+	fi
+
+	# Get first PID of node process of current user
+	local PID=`pgrep -u $OPENSHIFT_APP_UUID -x node -o`
 
 	# Return early if it stopped already
 	if [ "$PID" = "" ] ; then
