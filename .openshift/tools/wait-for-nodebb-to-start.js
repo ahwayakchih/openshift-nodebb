@@ -41,7 +41,7 @@ function waitForNodeBBToStart (timeout, callback) {
 			return;
 		}
 
-		log = (log + data.toString('utf8')).replace(/[^\n]*\n/g, function (chunk) {
+		logs = (logs + data.toString('utf8')).replace(/[^\n]*\n/g, function (chunk) {
 			if (NODEBB_IS_RUNNING_REGEX.test(chunk)) {
 				result = true;
 			}

@@ -63,10 +63,10 @@ git remote add upstream -m master https://github.com/NodeBB/NodeBB.git
 
 ### 4. Import NodeBB code to application
 
-This will cleanup some example stuff that node js cartridge created.
+This will clean up directory from example stuff that node js cartridge created.
 
 ```sh
-rm -rf `ls` .eslintrc
+rm -rf `ls` .eslintrc && git commit -a -m 'Cleaned up for NodeBB'
 ```
 
 This will import source code of NodeBB v0.9.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.9.x" with selected version number.
@@ -331,14 +331,13 @@ This will read and output downloaded file (press `q` key to quit, `ENTER` to scr
 more openshift-nodebb-setup.log
 ```
 
-If there is error about `EADDRINUSE` near the end ot log file, you can try to kill NodeBB manually using following commands:
+If there is an error about `EADDRINUSE` near the end of the log file, you can try to kill NodeBB manually using following commands:
 
 ```sh
 rhc ssh nodebb
 kill `lsof | grep :$OPENSHIFT_NODEJS_PORT | awk '{print $2}'`
 exit
 ```
-
 
 ### 2. Restart application
 
