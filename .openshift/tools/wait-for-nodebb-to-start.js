@@ -33,8 +33,9 @@ function waitForNodeBBToStart (timeout, callback) {
 		timeout = 120000;
 	}
 
-	tail = spawn('tail', ['-f', '-n', '0', path.join(process.env.OPENSHIFT_REPO_DIR, 'logs/output.log')]);
+	tail = spawn('tail', ['-F', '-n', '0', path.join(process.env.OPENSHIFT_REPO_DIR, 'logs/output.log')]);
 	var logs = '';
+	var errors = '';
 
 	tail.stdout.on('data', function (data) {
 		if (!tail) {
@@ -42,9 +43,13 @@ function waitForNodeBBToStart (timeout, callback) {
 		}
 
 		logs = (logs + data.toString('utf8')).replace(/[^\n]*\n/g, function (chunk) {
+			console.log(chunk);
+
 			if (NODEBB_IS_RUNNING_REGEX.test(chunk)) {
 				result = true;
 			}
+
+			return '';
 		});
 
 		if (result) {
@@ -58,21 +63,25 @@ function waitForNodeBBToStart (timeout, callback) {
 			return;
 		}
 
-		console.error(data.toString('utf8'));
-
-		tail.kill();
-		tail = null;
+		errors = (errors + data.toString('utf8')).replace(/[^\n]*\n/g, function (chunk) {
+			console.error(chunk);
+			return '';
+		});
 	});
 
 	tail.on('close', function (code, signal) {
 		var err = null;
 
 		if (!result) {
+			if (errors.length) {
+				console.error(errors);
+			}
+
 			if (Date.now() - startTime >= timeout) {
 				err = new Error('Error: Timeout');
 			}
 			else if (!code && signal) {
-				err = new Error('Error: Interrupted with ' + signal);
+				err = new Error('Error: Killed with ' + signal);
 			}
 			else {
 				err = new Error('Error: Exited with code: ' + code + ' and signal: ' + signal);
@@ -108,7 +117,7 @@ var argv = process.argv.slice();
  */
 var timeout = parseInt(argv.pop(), 10) || null;
 
-// Run test
+// Start waiting
 waitForNodeBBToStart(timeout, function (err) {
 	if (err) {
 		console.error(err.message);
