@@ -248,14 +248,14 @@ function onbb_wait_until_stopped () {
 		seconds=2
 	fi
 
-	local running=`curl -I "http://$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT/" 2>/dev/null`
+	local running=`curl -I --connect-timeout 1 --max-time 1 --retry-max-time 1 "http://$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT/" 2>/dev/null`
 
 	# Return early if it stopped already
 	if [ "$running" = "" ] ; then
 		return 0
 	fi
 
-	# Get first PID of node process of current user
+	# Find first PID of node process of current user
 	local PID=`pgrep -u $OPENSHIFT_APP_UUID -x node -o`
 
 	# Return early if it stopped already
