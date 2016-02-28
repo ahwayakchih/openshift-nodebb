@@ -1,110 +1,16 @@
 #!/bin/bash
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
-
-cd $OPENSHIFT_REPO_DIR
-
-#
-# Echo NodeBB version number from package.json file
-#
-function onbb_get_version () {
-	cat package.json | grep version | sed -s 's/[^0-9\.]//g'
-}
-
-#
-# Find and apply all patches matching NodeBB version number.
-#
-# @param [version] defaults to $(onbb_get_version)
-#
-function onbb_setup_sourcecode () {
-	local version=$1
-	if [ "$version" = "" ] ; then
-		version=$(onbb_get_version)
-	fi
-
-	local patches=`ls patches/openshift-$version*.diff 2>/dev/null`
-	if [ "$patches" = "" ] ; then
-		return 0;
-	fi
-
-	# Apply patches for selected version
-	for changeset in $patches ; do
-		echo "Applying changeset "$changeset
-		local rejected=$changeset".rejected"
-		patch -N --no-backup-if-mismatch -s -r $rejected -p1 < $changeset
-		if [ -f "$rejected" ] ; then
-			echo "Changeset $changeset was rejected. Check $rejected to see what parts of it could not be applied"
-		fi
-	done
-}
-
-#
-# Setup directories and ensure everything is set up ok
-#
-function onbb_setup_environment () {
-	# Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
-	.openshift/tools/ensure-package-scripts.js
-
-	# Make sure, that node.env, if it exists, will know to run nodebb
-	# This is needed only for legacy support and only on OpenShift's default nodejs-0.10 cartridge
-	local envFile="$OPENSHIFT_NODEJS_DIR""configuration/node.env"
-	if [ -f $envFile ] ; then
-		echo "Patching $envFile"
-		sed -i 's/server.js/nodebb/g' "$envFile"
-		sed -i 's/app.js/nodebb/g' "$envFile"
-	fi
-
-	# Override app.js
-	# We have to move original and replace it with our "wrapper"
-	# because NodeBB calls hardcoded "app.js" in some cases
-	# and we do not want to modify code in too many places.
-	if [ -f "openshift-app.js" ] ; then
-		echo "Overriding app.js"
-		mv app.js _app.js
-		mv openshift-app.js app.js
-	fi
-
-	local NODEBB_DATA_DIR="$OPENSHIFT_DATA_DIR""nodebb"
-
-	# Make sure there is persistent data directory
-	mkdir -p "$NODEBB_DATA_DIR"
-
-	# Symlink public/uploads to $OPENSHIFT_DATA_DIR/nodebb/public-uploads
-	local uploadsDir="$NODEBB_DATA_DIR/public-uploads"
-	if [ `readlink -f $uploadsDir` != `readlink -f public/uploads` ] ; then
-		echo "Pointing uploads directory to [OPENSHIFT_DATA_DIR]/nodebb/public-uploads"
-		cp -a public/uploads "$uploadsDir"
-		rm -rf public/uploads
-		ln -s "$uploadsDir" public/uploads
-	fi
-
-	# Symlink logs to $OPENSHIFT_DATA_DIR/nodebb/logs
-	local logsDir="$NODEBB_DATA_DIR/logs"
-	if [ `readlink -f $logsDir` != `readlink -f logs` ] ; then
-		echo "Pointing logs directory to [OPENSHIFT_DATA_DIR]/nodebb/logs"
-		cp -a logs "$logsDir"
-		rm -rf logs
-		ln -s "$logsDir" logs
-	fi
-
-	# Symlink config.json to $OPENSHIFT_DATA_DIR/nodebb/config.json
-	local configFilePath="$NODEBB_DATA_DIR/config.json"
-	if [ `readlink -f $configFilePath` != `readlink -f config.json` ] ; then
-		echo "Pointing config.json to [OPENSHIFT_DATA_DIR]/nodebb/config.json"
-		if [ -f config.json ] ; then
-			cp -a config.json "$configFilePath"
-		else
-			touch "$configFilePath"
-		fi
-		rm -rf config.json
-		ln -s "$configFilePath" config.json
-	fi
-}
+source "${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh"
 
 #
 # Run NodeBB setup passing through all its output
 #
 function onbb_setup_nodebb () {
 	echo "Running setup"
+
+	# Remember current working directory and switch to repo directory
+	local d=`pwd`
+	cd $OPENSHIFT_REPO_DIR
 
 	# Generate name
 	local name=$OPENSHIFT_APP_NAME
@@ -122,91 +28,70 @@ function onbb_setup_nodebb () {
 	fi
 
 	# Try to get e-mail, if not found, use fake address
-	local mail=$OPENSHIFT_LOGIN
-	if [ "$mail" = "" ] ; then
-		mail="$name@$FQDN"
+	local email=$OPENSHIFT_LOGIN
+	if [ "$email" = "" ] ; then
+		email="$name@$FQDN"
 	fi
 
-	# Select HTTP by default and HTTPS if SSL is working for selected FQDN
-	local PROTOCOL="http"`./.openshift/tools/test-ssl.js $OPENSHIFT_NODEJS_PORT $FQDN && echo -n "s"`
-
 	# Prepare JSON
-	local json='{"secret": "'$secret'", "admin:username": "'$name'", "admin:email": "'$mail'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
+	local json='{"secret": "'$secret'", "admin:username": "'$name'", "admin:email": "'$email'", "admin:password": "'$pass'", "admin:password:confirm": "'$pass'"}'
 
 	# Run setup and redirect output to file, so we can search it later
-	local LOGFILE="openshift-nodebb.log"
-	node app --setup "$json" --config "$configFilePath" 2>&1 | tee $LOGFILE
+	local LOGFILE="logs/openshift-nodebb-setup.log"
+	node app --setup "$json" 2>&1 | tee $LOGFILE
+
+	# Success marker
+	local failed=1
 
 	# Check result by looking for specific text
 	# Would be better if NodeBB's setup would exit with code
 	# but it does not, so we use this fragile workaround.
-	if cat $LOGFILE | grep -q "There was a problem completing NodeBB\|NodeBB Setup Aborted\|Error: listen EADDRINUSE" ; then
-		# Failed
-		client_result ""
-		client_result ".-============================================-."
-		client_result ".  Setup failed."
-		client_result "."
-		client_result ".  There was a problem completing NodeBB setup."
-		client_result "."
-		client_result ".  Check logfile for more information:"
-		client_result ".  $LOGFILE"
-		client_result "^-============================================-^"
-		client_result ""
-		
-		# Return error
-		return 1
-	else
+	if cat $LOGFILE | grep -q "NodeBB Setup Completed" ; then
 		# Success
+		failed=0
+
 		if cat $LOGFILE | grep -q "running initial user setup" ; then
-			# Created new admin user
-			client_result ""
-			client_result ".-============================================-."
-			client_result ".  Setup finished."
-			client_result "."
-			client_result ".  New administrator user has been created:"
-			client_result "."
-			client_result ".    email   : $mail"
-			client_result ".    login   : $name"
-			client_result ".    password: $pass"
-			client_result "."
-			client_result ".  You can log in at:"
-			client_result ".  $PROTOCOL://$FQDN/login"
-			client_result "."
-			client_result ".  WARNING: Be sure to change admin e-mail and"
-			client_result ".           password as soon as possible!"
-			client_result "^-============================================-^"
-			client_result ""
+			# Created new admin user and finished
+			onbb_echo_result_of_setup_success $name $pass $email
 		else
-			# Admin user was already there
-			client_result ""
-			client_result ".-============================================-."
-			client_result ".  Setup finished."
-			client_result "."
-			client_result ".  You can view your NodeBB at:"
-			client_result ".  $PROTOCOL://$FQDN/"
-			client_result "^-============================================-^"
-			client_result ""
+			# Finished upgrade (admin user already existed)
+			onbb_echo_result_of_setup_success
 		fi
 
+		# Remove log file
 		rm $LOGFILE
+	else
+		if cat $LOGFILE | grep -q "There was a problem completing NodeBB\|NodeBB Setup Aborted\|Error: listen EADDRINUSE" ; then
+			# Failed
+			onbb_echo_result_of_setup_failed $LOGFILE "There was a problem completing NodeBB setup."
+		else
+			# Possibly failed
+			onbb_echo_result_of_setup_failed $LOGFILE
+		fi
+	fi
+
+	# Switch back to previous directory
+	cd "$d"
+
+	# Return error when failed
+	if [ $failed -eq 1 ] ; then
+		return 1
 	fi
 }
 
 #
 # Prepare everything and run setup
 #
-function onbb_setup () {
+function onbb_deploy () {
 	# Get version number
 	local version=$(onbb_get_version)
 
 	echo "Configuring NodeBB $version for OpenShift"
 
-	onbb_setup_sourcecode $version && onbb_setup_environment && onbb_setup_nodebb && return 0
-
-	# We'll get here only if something went wrong above
-	# Return error
-	return 1
+	onbb_setup_sourcecode $version || return 1
+	onbb_setup_environment || return 1
+	onbb_setup_nodebb || return 1
 }
 
 # Exit with error if something went wrong - that will prevent rest of the deployment process from erroring even more.
-onbb_setup || exit 1
+onbb_deploy || exit 1

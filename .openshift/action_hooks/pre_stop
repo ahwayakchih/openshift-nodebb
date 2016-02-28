@@ -1,7 +1,0 @@
-#!/bin/bash
-source $OPENSHIFT_CARTRIDGE_SDK_BASH
-
-cd $OPENSHIFT_REPO_DIR
-
-# Make sure NodeBB is stopped
-npm stop

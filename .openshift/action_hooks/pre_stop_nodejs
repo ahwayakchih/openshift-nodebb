@@ -1,0 +1,5 @@
+#!/bin/bash
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+
+# Make sure NodeBB is stopped but ignore if something goes wrong
+npm stop 2>/dev/null || exit 0

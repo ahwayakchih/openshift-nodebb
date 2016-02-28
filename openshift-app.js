@@ -67,14 +67,14 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 	}
 
 	// MongoDB
-	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
+	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_IP || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
 
 		// OpenShift seems to create MongoDB datbase with the same name as the application name.
 		config.mongo.database = process.env.OPENSHIFT_APP_NAME || 'nodebb';
 
-		if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
+		if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_IP) {
 			config.mongo.host = process.env.OPENSHIFT_MONGODB_DB_HOST;
 		}
 		if (process.env.OPENSHIFT_MONGODB_DB_PORT) {
