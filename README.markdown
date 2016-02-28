@@ -113,7 +113,7 @@ After a while, you should be able to see something like this near the end of a l
 	.    login   : nodebb
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
-	.  Please wait for it to start.
+	.  Please wait for NodeBB to start.
 	.
 	.  WARNING: Be sure to change admin e-mail and
 	.           password after first log in!
@@ -177,7 +177,7 @@ After a while (sometimes quite a long while), you should be able to see somethin
 	.-============================================-.
 	.  Setup Finished.
 	.
-	.  Please wait for it to start.
+	.  Please wait for NodeBB to start.
 	^-============================================-^
 ```
 
