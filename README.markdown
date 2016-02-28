@@ -369,7 +369,7 @@ This should configure remote "origin" in your local git repository to point to y
 If you want to remove custom domain name, this will stop NodeBB from using it:
 
 ```sh
-rhc env set OPENSHIFT_APP_DNS_ALIAS
+rhc env unset OPENSHIFT_APP_DNS_ALIAS
 ```
 
 If you did add certificate, this will remove it:
