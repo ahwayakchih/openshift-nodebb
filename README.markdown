@@ -72,10 +72,10 @@ rm -rf `ls` .eslintrc && git commit -a -m 'Cleaned up for NodeBB'
 This will import source code of NodeBB v0.9.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.9.x" with selected version number.
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.9.x
+git pull --no-edit -s recursive -X theirs upstream v1.x.x
 ```
 
-This guide was tested with `v0.6.x`, `v0.7.x`, `v0.8.x` and `v0.9.x` branches.
+This guide was tested with `v0.6.x`, `v0.7.x`, `v0.8.x`, `v0.9.x` and `v1.x.x` branches.
 
 ### 5. Add OpenShift-NodeBB repository
 
@@ -152,10 +152,10 @@ cd nodebb
 Update NodeBB source code:
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v0.9.x
+git pull --no-edit -s recursive -X theirs upstream v1.x.x
 ```
 
-If you want to jump to new version, just replace "v0.9.x" with different branch name. Just remember, that it will work only for uprade (it is possible to downgrade, just not with that single pull command).
+If you want to jump to new version, simply replace "v1.x.x" with another branch name. Keep in mind, however, that it will work only for an uprade (it is possible to downgrade, just not with that single pull command).
 
 Update OpenShift-NodeBB patches:
 
@@ -247,9 +247,9 @@ So in short, here is when you can use HTTPS:
 - OpenShift domain
 - Custom domain only on premium plan
 
-There's no way for NodeBB to work 100% correctly with both HTTPS and custom domain name on a free plan.
-
 You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html
+
+There's no known way for NodeBB to work 100% correctly with both HTTPS and custom domain name on a free plan. CloudFlare does not seem to provide support for SSL websockets for anything below Enterprise plan.
 
 As usual, follow these steps on your local system (NOT on OpenShift side, through SSH).
 
@@ -295,7 +295,12 @@ This will restart your NodeBB installation, so it can use updated configuration 
 rhc app restart nodebb
 ```
 
-If later you decide to change domain name, simply repeat steps 1 to 4.
+### 5. Configure DNS
+
+Last thing to do is to configure DNS for your domain name to point to your OpenShift domain name. You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html#_step_2_configure_your_dns_host_records.
+Please note that some DNS changes may take up to 24 hours before propagating, so if your NodeBB site is not accessible through custom domain name, it may just be that you have to wait a bit before it starts working.
+
+If later you decide to change the domain name, simply repeat steps 1 to 5.
 
 
 ## Troubleshooting
