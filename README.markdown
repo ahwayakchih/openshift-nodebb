@@ -336,7 +336,7 @@ Once you have the log file, you can either check it yourself or post an issue at
 
 ### 2. Restart application
 
-Sometimes OpenShift may forget to restart application after its repository is updated. In such case, your "https://nodebb-youropenshiftusername.rhcloud.com/" site may not work as it should. That can be fixed with a simple command:
+Sometimes OpenShift may forget to restart application after its repository is updated. In such case, your NodeBB site may not work as it should. Sometimes that can be fixed with a simple command:
 
 ```sh
 rhc app restart
