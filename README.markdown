@@ -40,7 +40,7 @@ rhc cartridge add mongodb-2.4 -a nodebb
 To use Redis local to OpenShift server, run:
 
 ```sh
-rhc cartridge add http://cartreflect-claytondev.rhcloud.com/reflect?github=transformatordesign/openshift-redis-cart -a nodebb
+rhc cartridge add http://cartreflect-claytondev.rhcloud.com/github/transformatordesign/openshift-redis-cart -a nodebb
 ```
 
 To use third party MongoDB Database-as-a-Service from MongoLab, go to https://marketplace.openshift.com/login, add MongoLab subscription and connect it to the nodebb application (read more about that at https://developers.openshift.com/en/marketplace-mongolab.html).
