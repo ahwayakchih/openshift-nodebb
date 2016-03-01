@@ -213,16 +213,19 @@ This will change current working directory to the one used for NodeBB.
 cd nodebb
 ```
 
-This will install "Question and Answer" NodeBB plugin (https://github.com/psychobunny/nodebb-plugin-question-and-answer) locally and save information about it to the "package.json" file.
-You can change name of the module ("nodebb-plugin-question-and-answer" in this case), to install different plugin. Just remember to keep the "npm install --save" part of the command intact.
+As an example, this will install "Question and Answer" (https://github.com/psychobunny/nodebb-plugin-question-and-answer).
 
 ```sh
 npm install --save nodebb-plugin-question-and-answer
 ```
 
+Plugin will be installed locally and information about it will be saved to the "package.json" file.
+
+Change the name of the module (`nodebb-plugin-question-and-answer` in example above) to install plugin of your choice. Just remember to keep the `npm install --save ` part of the command intact.
+
 ### 2. Commit changes
 
-This will commit modifications to local repository.
+This will commit modifications to your local repository.
 
 ```sh
 git commit -a -m 'Added QA plugin'
@@ -298,6 +301,7 @@ rhc app restart nodebb
 ### 5. Configure DNS
 
 Last thing to do is to configure DNS for your domain name to point to your OpenShift domain name. You can read more about that at https://developers.openshift.com/en/managing-domains-ssl.html#_step_2_configure_your_dns_host_records.
+
 Please note that some DNS changes may take up to 24 hours before propagating, so if your NodeBB site is not accessible through custom domain name, it may just be that you have to wait a bit before it starts working.
 
 If later you decide to change the domain name, simply repeat steps 1 to 5.
