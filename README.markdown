@@ -8,7 +8,7 @@ Before continuing, you should know how to open and use command line on your syst
 
 ## Prerequisites
 
-First of all, you need an OpenShift account. If you do not have one yet, now is the time to register at https://www.openshift.com/app/account/new.
+First of all, you will need an OpenShift account. If you do not have one yet, now is the time to register at https://www.openshift.com/app/account/new.
 
 Next, install `rhc` application, as described at https://developers.openshift.com/en/managing-client-tools.html.
 
