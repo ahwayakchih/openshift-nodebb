@@ -72,10 +72,10 @@ rm -rf `ls` .eslintrc && git commit -a -m 'Cleaned up for NodeBB'
 This will import source code of NodeBB v0.9.x. To import different version instead, go to https://github.com/NodeBB/NodeBB, see what version branches are available and replace "v0.9.x" with selected version number.
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v1.x.x
+git pull --no-edit -s recursive -X theirs upstream v0.9.x
 ```
 
-This guide was tested with `v0.6.x`, `v0.7.x`, `v0.8.x`, `v0.9.x` and `v1.x.x` branches.
+This guide was tested with `v0.6.x`, `v0.7.x`, `v0.8.x`, and `v0.9.x` branches.
 
 ### 5. Add OpenShift-NodeBB repository
 
@@ -154,10 +154,10 @@ cd nodebb
 Update NodeBB source code:
 
 ```sh
-git pull --no-edit -s recursive -X theirs upstream v1.x.x
+git pull --no-edit -s recursive -X theirs upstream v0.9.x
 ```
 
-If you want to jump to new version, simply replace "v1.x.x" with another branch name. Keep in mind, however, that it will work only for an uprade (it is possible to downgrade, just not with that single pull command).
+If you want to jump to new version, simply replace "v0.9.x" with another branch name. Keep in mind, however, that it will work only for an uprade (it is possible to downgrade, just not with that single pull command).
 
 Update OpenShift-NodeBB patches:
 
