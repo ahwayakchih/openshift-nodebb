@@ -17,7 +17,7 @@ After that, you should have working `rhc` and `git` available on your system. If
 
 ## Installation
 
-To install NodeBB, follow these steps (they were tested using `bash` shell), without omitting any of them (unless stated otherwise), on your local system (NOT on OpenShift side, through SSH).
+To install NodeBB, follow these steps (they were tested using `bash` shell), without omitting any of them (unless stated otherwise), on your local system (NOT on the OpenShift side, through SSH).
 
 ### 1. Creating a new application
 
@@ -79,13 +79,15 @@ This guide was tested with `v0.6.x`, `v0.7.x`, `v0.8.x`, `v0.9.x` and `v1.x.x` b
 
 ### 5. Add OpenShift-NodeBB repository
 
-This will allow to import patches and action_hooks needed to use NodeBB on OpenShift without worrying too much about dynamic IP and/or port number changes or files uploaded by users disappearing.
+This will allow to import patches and action_hooks needed to use NodeBB without worrying too much about dynamic IP and/or port number changes or files uploaded by users disappearing.
 
 ```sh
 git remote add openshift -m master https://github.com/ahwayakchih/openshift-nodebb.git
 ```
 
-### 6. Import OpenShift-NodeBB patches
+### 6. Import OpenShift-NodeBB
+
+This will import scripts and patches mentioned above.
 
 ```sh
 git pull --no-edit -s recursive -X theirs openshift master
@@ -139,7 +141,7 @@ Use that new admin login and password to log in to your new NodeBB installation,
 
 ## Updates
 
-From now on, every time you want to update NodeBB, you can simply follow three steps. Follow them on your local system (NOT on OpenShift side, through SSH).
+From now on, every time you want to update NodeBB, you can simply follow three steps. Follow them on your local system (NOT on the OpenShift side, through SSH).
 
 ### 1. Pull changes
 
@@ -200,10 +202,10 @@ And then:
 
 If you just want to test things and look around, you can simply install/enable plugins through administration pages.
 
-If you want to keep NodeBB running on OpenShift, you should add plugins through your repository instead. That is because OpenShift may erase all the files on server whenever you push changes to your repository.
+If you want to keep NodeBB running in the OpenShift cloud, you should add plugins through your repository instead. That is because OpenShift may erase all the files on server whenever you push changes to your repository.
 NodeBB can install plugins, but it will not add them to the "package.json" file, nor it will commit changes to your repository.
 
-To keep plugins installed and working between updates, you can install them using `npm`. Follow these steps on your local system (NOT on OpenShift side, through SSH).
+To keep plugins installed and working between updates, you can install them using `npm`. Follow these steps on your local system (NOT on the OpenShift side, through SSH).
 
 ### 1. Install plugin locally
 
@@ -254,7 +256,7 @@ You can read more about that at https://developers.openshift.com/en/managing-dom
 
 There's no known way for NodeBB to work 100% correctly with both HTTPS and custom domain name on a free plan. CloudFlare does not seem to provide support for SSL websockets for anything below Enterprise plan.
 
-As usual, follow these steps on your local system (NOT on OpenShift side, through SSH).
+As usual, follow these steps on your local system (NOT on the OpenShift side, through SSH).
 
 ### 1. Add domain name to application
 
@@ -340,7 +342,7 @@ Once you have the log file, you can either check it yourself or post an issue at
 
 ### 2. Restart application
 
-Sometimes OpenShift may forget to restart application after its repository is updated. In such case, your NodeBB site may not work as it should. Sometimes that can be fixed with a simple command:
+From time to time something may go wrong while OpenShift tries to restart application, e.g., after its repository is updated. In such case, your NodeBB site may not work as it should. Sometimes that can be fixed with a simple command:
 
 ```sh
 rhc app restart
@@ -360,7 +362,7 @@ and then:
 git remote add origin `rhc app show nodebb | grep -oh "ssh://\S\{1,\}\.rhcloud.com/~/git/\S*"`
 ```
 
-This should configure remote "origin" in your local git repository to point to your git repository on OpenShift servers.
+This should configure remote "origin" in your local git repository to point to your git repository located on the OpenShift servers.
 
 ### 4. Remove custom domain name
 
