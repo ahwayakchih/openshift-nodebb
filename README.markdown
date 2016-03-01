@@ -218,12 +218,12 @@ cd nodebb
 As an example, this will install "Question and Answer" plugin (https://github.com/psychobunny/nodebb-plugin-question-and-answer).
 
 ```sh
-npm install --save nodebb-plugin-question-and-answer
+npm install --production --save nodebb-plugin-question-and-answer
 ```
 
 Plugin will be installed locally and information about it will be saved to the "package.json" file.
 
-Change the name of the module (`nodebb-plugin-question-and-answer` in the example above) to install plugin of your choice. Just remember to keep the `npm install --save ` part of the command intact.
+Change the name of the module (`nodebb-plugin-question-and-answer` in the example above) to install plugin of your choice. Just remember to keep the `npm install --production --save ` part of the command intact.
 
 ### 2. Commit changes
 
