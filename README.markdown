@@ -1,7 +1,7 @@
 NodeBB in the OpenShift cloud
 =============================
 
-This document will guide you through the process of installing NodeBB (http://www.nodebb.org) in OpenShift cloud (https://www.openshift.com/). It will also let you know how to keep NodeBB updated afterwards.
+This document will guide you through the process of installing NodeBB (http://www.nodebb.org) in the OpenShift cloud (https://www.openshift.com/). It will also let you know how to keep NodeBB updated afterwards.
 
 Before continuing, you should know how to open and use command line on your system. This guide does not describe how to do that.
 
@@ -87,7 +87,7 @@ git remote add openshift -m master https://github.com/ahwayakchih/openshift-node
 
 ### 6. Import OpenShift-NodeBB
 
-This will import scripts and patches mentioned above.
+This will import scripts and patches mentioned in previous step.
 
 ```sh
 git pull --no-edit -s recursive -X theirs openshift master
