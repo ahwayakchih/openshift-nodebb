@@ -138,6 +138,81 @@ And then:
 
 Use that new admin login and password to log in to your new NodeBB installation, and change them to something suitable for you.
 
+## Admin Recovery (MongoDB) / Custom Admin Account
+
+In case you skipped past the above dialog and didn't save your forum's admin password you can add admin users yourself.
+
+### Step 1. First register on your forum as yourself or with an alternate email
+
+We'll be turning this account into another admin to manage your site.
+
+### Step 2. Add the RockMongo cartridge to your app
+
+You may also install rockmongo from the webconsole <a href="https://openshift.redhat.com/app/console/applications" target="_blank">https://openshift.redhat.com/app/console/applications</a> if you choose
+
+```
+rhc cartridge add rockmongo-1.1 -a nodebb
+```
+
+### Step 3. Login to RockMongo
+
+You can now visit https://nodebb-yoursubdomain.rhcloud.com/rockmongo/ to login
+You can find your credentials in the webconsole if you lose them <a href="https://openshift.redhat.com/app/console/applications" target="_blank">https://openshift.redhat.com/app/console/applications</a>
+
+### Step 4. Navigate to Nodebb's database table
+
+Openshift's database name will match the name of your application so following all of the above examples
+Navigate yourself to nodebb > objects
+
+### Step 5. Get your user's id
+
+Run this query in rockmongo, this will return a list of all your forum's users, find the one you just created.
+
+```
+{ 
+	"_key" : "username:uid" 
+} 
+```
+
+You may also narrow your search query by your username instead, take note of which key is related to usernames. This is likely the "value" key.
+
+```
+{
+	"_key" : "username:uid",
+	"value" : "youremail@example.com"
+}
+```
+
+When you find your user's record make a note of the number inside NumberInt(?) this is your user's id which we'll use later
+
+### Step 6. Add your new account to the administrators group
+
+This query returns the record which maintains who is on the admin list, we'll edit this record by adding our new user's id
+
+```
+{ 
+	"_key" : "group:administrators:members" 
+}
+```
+
+Click Update on the record that was returned by this query and modify eaither the "values" key or "members" key (whichever is available, depends on your version of NodeBB) make sure it reflects the list of users you actually want to be admins. You may use this also to remove admin priviledges. EG if I want user 1 and user 2 to be admins...
+
+```
+{
+	"_key": "group:administrators:members",
+	...
+	"value": [
+		"1",
+		"2"
+	]
+}
+```
+
+Click Save
+
+### Step 7. Enjoy your admin priviledges
+
+Login as your new registered user and you will now have access to the admin panel and all other perks associated with an admin account. Huzzah!
 
 ## Updates
 
