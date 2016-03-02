@@ -10,7 +10,7 @@ Before continuing, you should know how to open and use command line on your syst
 
 First of all, you will need an OpenShift account. If you do not have one yet, now is the time to register at https://www.openshift.com/app/account/new.
 
-Next, install `rhc` application, as described at https://developers.openshift.com/en/managing-client-tools.html.
+Next, install `rhc` application, as described at https://developers.openshift.com/en/managing-client-tools.html. Make sure to follow the steps described in the "Setting up Your Machine" section relevant for your operating system.
 
 After that, you should have working `rhc` and `git` available on your system. If you had to install `git`, make sure that you configured your identity, as described at: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#Your-Identity.
 
@@ -21,11 +21,15 @@ To install NodeBB, follow these steps (they were tested using `bash` shell), wit
 
 ### 1. Creating a new application
 
+Make sure that there is no local "nodebb" directory already there. If there is, either move it somewhere else or change its name. You can also use different name than "nodebb" for your application. In such case, be sure to replace the word "nodebb" (but only if it is all in small caps, and not part of another word) in every command mentioned in this guide.
+
+This will create the application in the OpenShift cloud.
+
 ```sh
 rhc app create nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
 ```
 
-That should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
+It should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
 
 ### 2. Adding database cartridge
 
