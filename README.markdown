@@ -12,7 +12,7 @@ First of all, you will need an OpenShift account. If you do not have one yet, no
 
 Next, install `rhc` application, as described at https://developers.openshift.com/en/managing-client-tools.html. Make sure to follow the steps described in the "Setting up Your Machine" section relevant for your operating system.
 
-After that, you should have working `rhc` and `git` available on your system. If you had to install `git`, make sure that you configured your identity, as described at: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#Your-Identity.
+After that, you should have working `rhc` and `git` available on your system. If you had to install `git`, or never used it before, make sure that you configured your identity, as described at: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#Your-Identity.
 
 
 ## Installation
