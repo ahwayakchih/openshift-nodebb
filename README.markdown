@@ -388,6 +388,16 @@ Finally, this will stop OpenShift from using your domain name:
 rhc alias remove nodebb example.com
 ```
 
+### 5. Lost administrative password
+
+If you ever lose password to your administrator account, and email is not configured or does not work for some reason, use this command to get URL to "password reset" page:
+
+```sh
+rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-youropenshiftusername.rhcloud.com'
+```
+
+Relace `nodebb@nodebb-youropenshiftusername.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same, with only `youropenshiftusername` to replace with your OpenShift user name.
+
 
 ## Acknowledgments
 
