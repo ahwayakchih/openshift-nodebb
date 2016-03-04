@@ -1,0 +1,29 @@
+{
+  "name": "onbb",
+  "version": "0.1.0",
+  "description": "Helps running NodeBB on OpenShift",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --bail --reporter spec --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahwayakchih/openshift-nodebb.git"
+  },
+  "keywords": [
+    "openshift",
+    "nodebb"
+  ],
+  "author": "Marcin Konicki <ahwayakchih@neoni.net>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/ahwayakchih/openshift-nodebb/issues"
+  },
+  "homepage": "https://github.com/ahwayakchih/openshift-nodebb#readme",
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}

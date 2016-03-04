@@ -113,4 +113,6 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 
 	// Continue booting NodeBB
 	setImmediate(require.bind(null, './_app.js'));
+
+	require('./.openshift/lib/onbb_utils.js').onbb_start_command_server();
 });

@@ -173,8 +173,14 @@ function onbb_setup_environment () {
 	local d=`pwd`
 	cd "$OPENSHIFT_REPO_DIR"
 
-	# Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
+	# Make sure, that `npm start` will run `nodebb start`, so nodejs cartridge can start it correctly
 	.openshift/tools/ensure-package-scripts.js || return 1
+
+	# Make sure, that our `onbb` module is installed and has all dependencies met
+	cd .openshift/lib/onbb || return 1
+	npm prune --production
+	npm install --production || return 1
+	cd ../../../
 
 	# Make sure, that node.env, if it exists, will know to run nodebb
 	# This is needed only for legacy support and only on OpenShift's default nodejs-0.10 cartridge
@@ -303,5 +309,19 @@ function onbb_wait_until_ready () {
 
 	local milliseconds=$(echo "$seconds * 1000" | bc)
 
-	${OPENSHIFT_REPO_DIR}.openshift/tools/wait-for-nodebb-to-start.js $milliseconds || return 1
+	"${OPENSHIFT_REPO_DIR}.openshift/tools/wait-for-nodebb-to-start.js" $milliseconds || return 1
+}
+
+#
+# Execute command on NodeBB server.
+#
+function onbb_exec_command () {
+	local server=`ls "${OPENSHIFT_REPO_DIR}" | grep -m 1 'onbb-[0-9]*.sock'`
+
+	if [ $server = "" ] ; then
+		>&2 echo "No server found"
+		return 1
+	fi
+
+	echo $@ | "${OPENSHIFT_REPO_DIR}.openshift/tools/run-command.js" "${OPENSHIFT_REPO_DIR}${server}" || return 1
 }
