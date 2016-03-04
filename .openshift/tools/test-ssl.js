@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * This script will temporarily start webserver on HTTP and send request to it through HTTPS
- * to check if HTTPS on specified domain works OK.
+ * This script will temporarily start webserver on HTTP and send request to it
+ * through a specified domain using HTTPS to check if it works ok, e.g.,
+ * if certificate is valid, if connection is routed correctly, etc...
  */
 var https = require('https');
 var http  = require('http');
