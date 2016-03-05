@@ -396,7 +396,7 @@ If you ever lose password to your administrator account, and email is not config
 rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-youropenshiftaccountname.rhcloud.com'
 ```
 
-Relace `nodebb@nodebb-youropenshiftaccountname.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same as in example, with only `youropenshiftaccountname` to replace with your OpenShift user name.
+Relace `nodebb@nodebb-youropenshiftaccountname.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same as in example, with only `youropenshiftaccountname` to replace with your OpenShift account name.
 
 
 ## Acknowledgments
