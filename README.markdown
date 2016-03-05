@@ -19,9 +19,11 @@ After that, you should have working `rhc` and `git` available on your system. If
 
 To install NodeBB, follow these steps (they were tested using `bash` shell), without omitting any of them (unless stated otherwise), on your local system (NOT on the OpenShift side, through SSH).
 
+By default, your NodeBB application will be available at `http://nodebb-yourappnamespace.rhcloud.com`. You can change that by changing your [OpenShift domain name](#yourappnamespace) and/or [application name](#nodebb).
+
 ### 1. Creating a new application
 
-Make sure that there is no local "nodebb" directory already there. If there is, either move it somewhere else or change its name. You can also use different name than "nodebb" for your application. In such case, be sure to replace the word "nodebb" (but only if it is all in small caps, and not part of another word) in every command mentioned in this guide.
+Make sure that there is no local `nodebb` directory already there. If there is, either move it somewhere else or change its name.
 
 This will create the application in the OpenShift cloud.
 
@@ -29,7 +31,7 @@ This will create the application in the OpenShift cloud.
 rhc app create nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
 ```
 
-It should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
+It should create your local copy of your OpenShift repository in a directory called `nodebb`. If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
 
 ### 2. Adding database cartridge
 
@@ -115,7 +117,7 @@ After a while, you should be able to see something like this near the end of a l
 	.
 	.  New administrator user has been created:
 	.
-	.    email   : nodebb@nodebb-youropenshiftaccountname.rhcloud.com
+	.    email   : nodebb@nodebb-yourappnamespace.rhcloud.com
 	.    login   : nodebb
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
@@ -133,12 +135,14 @@ And then:
 	.  NodeBB is ready.
 	.
 	.  You can visit it at:
-	.  https://nodebb-youropenshiftaccountname.rhcloud.com/
+	.  https://nodebb-yourappnamespace.rhcloud.com/
 	.
 	.  You can log in to it at:
-	.  https://nodebb-youropenshiftaccountname.rhcloud.com/login
+	.  https://nodebb-yourappnamespace.rhcloud.com/login
 	^-============================================-^
 ```
+
+Your NodeBB application should be working now.
 
 Use that new admin login and password to log in to your new NodeBB installation, and change them to something suitable for you.
 
@@ -194,10 +198,10 @@ And then:
 	.  NodeBB is ready.
 	.
 	.  You can visit it at:
-	.  https://nodebb-youropenshiftaccountname.rhcloud.com/
+	.  https://nodebb-yourappnamespace.rhcloud.com/
 	.
 	.  You can log in to it at:
-	.  https://nodebb-youropenshiftaccountname.rhcloud.com/login
+	.  https://nodebb-yourappnamespace.rhcloud.com/login
 	^-============================================-^
 ```
 
@@ -393,10 +397,10 @@ rhc alias remove nodebb example.com
 If you ever lose password to your administrator account, and email is not configured or does not work for some reason, use this command to get URL to "password reset" page:
 
 ```sh
-rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-youropenshiftaccountname.rhcloud.com'
+rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-yourappnamespace.rhcloud.com'
 ```
 
-Relace `nodebb@nodebb-youropenshiftaccountname.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same as in example, with only `youropenshiftaccountname` to replace with your OpenShift account name.
+Relace `nodebb@nodebb-yourappnamespace.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same, with only `yourappnamespace` to replace with your OpenShift application's namespace.
 
 
 ## Acknowledgments
@@ -409,3 +413,18 @@ https://developers.openshift.com/en/managing-action-hooks.html
 It also wouldn't be created if not for numerous questions and conversations with Sylwester Cyba from http://nhl.pl/.
 
 Part describing custom domain setup was created thanks to Benderwan (https://github.com/Benderwan) reporting problem and testing solutions (https://github.com/ahwayakchih/openshift-nodebb/issues/7).
+
+
+## Definitions
+
+### yourappnamespace
+
+`yourappnamespace` refers to what OpenShift calls "namespace" or "domain". It is created at `rhc` setup. Free OpenShift plans can have only one such domain.
+
+If you have one of the "premium" plans and you created multiple domains, make sure to include `-n yourappnamespace` with every `rhc` command used in this document. For example, `rhc cartridge add mongodb-2.4 -a nodebb` should be changed to `rhc cartridge add mongodb-2.4 -a nodebb -n yourappnamespace`.
+
+### nodebb
+
+When used as a standalone word all in small caps, `nodebb` refers to the name of your application.
+
+You can change it to something else, just make sure to change every instance of it, in every command mentioned in this guide. For example `rhc app show nodebb` should be changed to `rhc app show yourappname`, but URL of `https://github.com/NodeBB/NodeBB.git` should not be changed at all.
