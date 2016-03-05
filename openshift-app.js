@@ -50,23 +50,7 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 		}
 	}
 
-	// Redis
-	if (process.env.OPENSHIFT_REDIS_HOST || process.env.REDIS_PASSWORD) {
-		config.database = config.database || 'redis';
-		config.redis = config.redis || {};
-
-		if (process.env.OPENSHIFT_REDIS_HOST) {
-			config.redis.host = process.env.OPENSHIFT_REDIS_HOST;
-		}
-		if (process.env.OPENSHIFT_REDIS_PORT) {
-			config.redis.port = process.env.OPENSHIFT_REDIS_PORT;
-		}
-		if (process.env.REDIS_PASSWORD) {
-			config.redis.password = process.env.REDIS_PASSWORD;
-		}
-	}
-
-	// MongoDB
+	// MongoDB is preferred by default
 	if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_IP || process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
@@ -88,7 +72,7 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 		}
 	}
 
-	// MongoLab
+	// MongoLab is preferred by default
 	if (process.env.MONGOLAB_URI) {
 		config.database = config.database || 'mongo';
 		config.mongo = config.mongo || {};
@@ -101,6 +85,23 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 		config.mongo.username = mongolabURL.auth[0];
 		config.mongo.password = mongolabURL.auth[1];
 		config.mongo.database = mongolabURL.pathname.substring(1);
+	}
+
+	// Redis - by setting it up last, we make sure it will not override MongoDB as default database.
+	// That allows us to have both databases, and will make NodeBB use redis for socket.io-session store.
+	if (process.env.OPENSHIFT_REDIS_HOST || process.env.REDIS_PASSWORD) {
+		config.database = config.database || 'redis';
+		config.redis = config.redis || {};
+
+		if (process.env.OPENSHIFT_REDIS_HOST) {
+			config.redis.host = process.env.OPENSHIFT_REDIS_HOST;
+		}
+		if (process.env.OPENSHIFT_REDIS_PORT) {
+			config.redis.port = process.env.OPENSHIFT_REDIS_PORT;
+		}
+		if (process.env.REDIS_PASSWORD) {
+			config.redis.password = process.env.REDIS_PASSWORD;
+		}
 	}
 
 	// Set overrides from OpenShift environment
