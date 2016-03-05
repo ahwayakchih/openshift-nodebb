@@ -115,7 +115,7 @@ After a while, you should be able to see something like this near the end of a l
 	.
 	.  New administrator user has been created:
 	.
-	.    email   : nodebb@nodebb-youropenshiftusername.rhcloud.com
+	.    email   : nodebb@nodebb-youropenshiftaccountname.rhcloud.com
 	.    login   : nodebb
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
@@ -133,10 +133,10 @@ And then:
 	.  NodeBB is ready.
 	.
 	.  You can visit it at:
-	.  https://nodebb-youropenshiftusername.rhcloud.com/
+	.  https://nodebb-youropenshiftaccountname.rhcloud.com/
 	.
 	.  You can log in to it at:
-	.  https://nodebb-youropenshiftusername.rhcloud.com/login
+	.  https://nodebb-youropenshiftaccountname.rhcloud.com/login
 	^-============================================-^
 ```
 
@@ -194,10 +194,10 @@ And then:
 	.  NodeBB is ready.
 	.
 	.  You can visit it at:
-	.  https://nodebb-youropenshiftusername.rhcloud.com/
+	.  https://nodebb-youropenshiftaccountname.rhcloud.com/
 	.
 	.  You can log in to it at:
-	.  https://nodebb-youropenshiftusername.rhcloud.com/login
+	.  https://nodebb-youropenshiftaccountname.rhcloud.com/login
 	^-============================================-^
 ```
 
@@ -393,10 +393,10 @@ rhc alias remove nodebb example.com
 If you ever lose password to your administrator account, and email is not configured or does not work for some reason, use this command to get URL to "password reset" page:
 
 ```sh
-rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-youropenshiftusername.rhcloud.com'
+rhc ssh -a nodebb 'source ${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh && onbb_exec_command resetPassword nodebb@nodebb-youropenshiftaccountname.rhcloud.com'
 ```
 
-Relace `nodebb@nodebb-youropenshiftusername.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same, with only `youropenshiftusername` to replace with your OpenShift user name.
+Relace `nodebb@nodebb-youropenshiftaccountname.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same as in example, with only `youropenshiftaccountname` to replace with your OpenShift user name.
 
 
 ## Acknowledgments
