@@ -405,10 +405,10 @@ rhc alias remove nodebb example.com
 If you ever lose password to your administrator account, and email is not configured or does not work for some reason, use this command to get URL to "password reset" page:
 
 ```sh
-rhc ssh -a nodebb 'source "${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh" && onbb_exec_command resetPassword nodebb@nodebb-yourappnamespace.rhcloud.com'
+rhc ssh -a nodebb 'source "${OPENSHIFT_REPO_DIR}.openshift/lib/onbb_utils.sh" && onbb_exec_command resetPassword youremail@example.com'
 ```
 
-Relace `nodebb@nodebb-yourappnamespace.rhcloud.com` with e-mail address set for the account. By default, this will be almost the same, with only `yourappnamespace` to replace with your OpenShift application's namespace, in which case you can use: `"${OPENSHIFT_APP_NAME}@${OPENSHIFT_APP_DNS}"` as an e-mail address.
+Relace `youremail@example.com` with e-mail address set for the account. You can try `"${NODEBB_ADMIN_EMAIL}"` or `"${OPENSHIFT_APP_NAME}@${OPENSHIFT_APP_DNS}"` as an e-mail address.
 
 
 ## Acknowledgments
