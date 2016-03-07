@@ -153,13 +153,17 @@ function onbb_setup_fqdn () {
 }
 
 #
-# Setup NODEBB_ADMIN_EMAIL from NODEBB_ADMIN_EMAIL, or from OPENSHIFT_LOGIN, or fail.
+# Setup NODEBB_ADMIN_EMAIL from NODEBB_ADMIN_EMAIL, or from OPENSHIFT_LOGIN, or as OPENSHIFT_APP_NAME@NODEBB_FQDN, or fail.
 #
 function onbb_get_setup_email () {
 	local email="$NODEBB_ADMIN_EMAIL"
 
 	if [ "$email" = "" ] ; then
 		email="$OPENSHIFT_LOGIN"
+	fi
+
+	if [ "$email" = "" -a "$NODEBB_FQDN" != "" ] ; then
+		email="$OPENSHIFT_APP_NAME@$NODEBB_FQDN"
 	fi
 
 	if [ "$email" = "" ] ; then
