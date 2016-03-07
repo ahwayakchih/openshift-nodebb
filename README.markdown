@@ -28,7 +28,7 @@ Make sure that there is no local `nodebb` directory already there. If there is, 
 This will create the application in the OpenShift cloud.
 
 ```sh
-rhc app create nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
+rhc app create --no-scaling nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
 ```
 
 It should create your local copy of your OpenShift repository in a directory called `nodebb`. If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
