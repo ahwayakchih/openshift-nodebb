@@ -23,10 +23,10 @@ To install NodeBB, follow these steps (they were tested using `bash` shell), wit
 
 Make sure that there is no local "nodebb" directory already there. If there is, either move it somewhere else or change its name. You can also use different name than "nodebb" for your application. In such case, be sure to replace the word "nodebb" (but only if it is all in small caps, and not part of another word) in every command mentioned in this guide.
 
-This will create the application in the OpenShift cloud. Please notice `youremail@example.com` part, which you should change to e-mail address you want set for NodeBB administrator account.
+This will create the application in the OpenShift cloud.
 
 ```sh
-rhc app create -e NODEBB_ADMIN_EMAIL=youremail@example.com nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
+rhc app create nodebb http://cartreflect-claytondev.rhcloud.com/github/icflorescu/openshift-cartridge-nodejs NODE_VERSION_URL=https://semver.io/node/resolve/0.10
 ```
 
 It should create your local copy of your OpenShift repository in a directory called "nodebb". If it does not, check if there were some errors in the output and maybe try again before continuing. Without that directory, rest of the steps will not work as they should.
@@ -97,7 +97,15 @@ This will import scripts and patches mentioned in previous step.
 git pull --no-edit -s recursive -X theirs openshift master
 ```
 
-### 7. Push everything to application repository
+### 7. Configure administrator e-mail
+
+This will set NodeBB administrator e-mail address to `youremail@example.com`. Please change it to the one you want to be used by your NodeBB installation.
+
+```sh
+rhc env set NODEBB_ADMIN_EMAIL=youremail@example.com -a nodebb
+```
+
+### 8. Push everything to application repository
 
 This will push everything to OpenShift servers, deploy and start NodeBB.
 
@@ -105,7 +113,7 @@ This will push everything to OpenShift servers, deploy and start NodeBB.
 git push origin master
 ```
 
-### 8. That's it!
+### 9. That's it!
 
 After a while, you should be able to see something like this near the end of a long text output from previous command:
 
@@ -115,14 +123,14 @@ After a while, you should be able to see something like this near the end of a l
 	.
 	.  New administrator user has been created:
 	.
-	.    email   : nodebb@nodebb-youropenshiftusername.rhcloud.com
+	.    email   : youremail@example.com
 	.    login   : nodebb
 	.    password: 9D7u-KAtN-76Kz-TCyX
 	.
 	.  Please wait for NodeBB to start.
 	.
-	.  WARNING: Be sure to change admin e-mail and
-	.           password after first log in!
+	.  WARNING: Be sure to change admin password
+	.           after first log in!
 	^-============================================-^
 ```
 

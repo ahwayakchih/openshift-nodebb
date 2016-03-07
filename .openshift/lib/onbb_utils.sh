@@ -81,8 +81,8 @@ function onbb_echo_result_of_setup_success () {
 		client_result "."
 		client_result ".  Please wait for NodeBB to start."
 		client_result "."
-		client_result ".  WARNING: Be sure to change admin e-mail and"
-		client_result ".           password after first log in!"
+		client_result ".  WARNING: Be sure to change admin password"
+		client_result ".           after first log in!"
 		client_result "^-============================================-^"
 		client_result ""
 	fi
