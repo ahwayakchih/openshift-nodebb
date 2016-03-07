@@ -24,7 +24,7 @@ function onbb_setup_nodebb () {
 	# Try to get e-mail, if not found, use fake address
 	local email="$NODEBB_ADMIN_EMAIL"
 	if [ "$email" = "" ] ; then
-		email="$name@$NODEBB_FQDN"
+		email="$name@127.0.0.1"
 	fi
 
 	# Prepare JSON
