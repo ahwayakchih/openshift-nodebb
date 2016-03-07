@@ -21,16 +21,10 @@ function onbb_setup_nodebb () {
 	# Generate NodeBB secret
 	local secret=`uuidgen -r`
 
-	# Select domain name to be used
-	local FQDN=$OPENSHIFT_APP_DNS_ALIAS
-	if [ "$FQDN" = "" ] ; then
-		FQDN=$OPENSHIFT_APP_DNS
-	fi
-
 	# Try to get e-mail, if not found, use fake address
-	local email=$OPENSHIFT_LOGIN
+	local email="$NODEBB_ADMIN_EMAIL"
 	if [ "$email" = "" ] ; then
-		email="$name@$FQDN"
+		email="$name@$NODEBB_FQDN"
 	fi
 
 	# Prepare JSON
