@@ -5,7 +5,7 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 #
 # Echo NodeBB version number from package.json file
 #
-function onbb_get_version () {
+function onbb_get_nodebb_version () {
 	cat "${OPENSHIFT_REPO_DIR}package.json" | grep version | sed -s 's/[^0-9\.]//g'
 }
 
@@ -136,9 +136,43 @@ function onbb_echo_result_of_start_success () {
 }
 
 #
+# Setup NODEBB_FQDN, preferring OPENSHIFT_APP_DNS_ALIAS, then OPENSHIFT_APP_DNS, or fail.
+#
+function onbb_setup_fqdn () {
+	local FQDN="$OPENSHIFT_APP_DNS_ALIAS"
+
+	if [ "$FQDN" = "" ] ; then
+		FQDN="$OPENSHIFT_APP_DNS"
+	fi
+
+	if [ "$FQDN" = "" ] ; then
+		return 1
+	fi
+
+	export NODEBB_FQDN="$FODN"
+}
+
+#
+# Setup NODEBB_ADMIN_EMAIL from NODEBB_ADMIN_EMAIL, or from OPENSHIFT_LOGIN, or fail.
+#
+function onbb_get_setup_email () {
+	local email="$NODEBB_ADMIN_EMAIL"
+
+	if [ "$email" = "" ] ; then
+		email="$OPENSHIFT_LOGIN"
+	fi
+
+	if [ "$email" = "" ] ; then
+		return 1
+	fi
+
+	export NODEBB_ADMIN_EMAIL="$email"
+}
+
+#
 # Find and apply all patches matching NodeBB version number.
 #
-# @param [version] defaults to $(onbb_get_version)
+# @param [version] defaults to $(onbb_get_nodebb_version)
 #
 function onbb_setup_sourcecode () {
 	local version=$1
@@ -147,7 +181,7 @@ function onbb_setup_sourcecode () {
 	cd "$OPENSHIFT_REPO_DIR"
 
 	if [ "$version" = "" ] ; then
-		version=$(onbb_get_version)
+		version=$(onbb_get_nodebb_version)
 	fi
 
 	local patches=`ls patches/openshift-$version*.diff 2>/dev/null`
@@ -175,6 +209,12 @@ function onbb_setup_environment () {
 
 	# Make sure, that `npm start` will run `nodebb start`, so NodeBB can restart itself and use correct logs
 	.openshift/tools/ensure-package-scripts.js || return 1
+
+	# Make sure NODEBB_FQDN is set
+	onbb_setup_fqdn || return 1
+
+	# Make sure NODEBB_ADMIN_EMAIL is set
+	onbb_get_setup_email || return 1
 
 	# Make sure, that node.env, if it exists, will know to run nodebb
 	# This is needed only for legacy support and only on OpenShift's default nodejs-0.10 cartridge
