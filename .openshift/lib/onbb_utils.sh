@@ -155,7 +155,7 @@ function onbb_setup_fqdn () {
 #
 # Setup NODEBB_ADMIN_EMAIL from NODEBB_ADMIN_EMAIL, or from OPENSHIFT_LOGIN, or as OPENSHIFT_APP_NAME@NODEBB_FQDN, or fail.
 #
-function onbb_get_setup_email () {
+function onbb_setup_email () {
 	local email="$NODEBB_ADMIN_EMAIL"
 
 	if [ "$email" = "" ] ; then
@@ -218,7 +218,7 @@ function onbb_setup_environment () {
 	onbb_setup_fqdn || return 1
 
 	# Make sure NODEBB_ADMIN_EMAIL is set
-	onbb_get_setup_email || return 1
+	onbb_setup_email || return 1
 
 	# Make sure, that our `onbb` module is installed and has all dependencies met
 	cd .openshift/lib/onbb || return 1
