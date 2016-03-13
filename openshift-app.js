@@ -59,7 +59,7 @@ testSSL(IP, PORT, FQDN, function onTestSSLResult (err) {
 		config.mongo.database = process.env.OPENSHIFT_APP_NAME || 'nodebb';
 
 		if (process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_IP) {
-			config.mongo.host = process.env.OPENSHIFT_MONGODB_DB_HOST;
+			config.mongo.host = process.env.OPENSHIFT_MONGODB_DB_HOST || process.env.OPENSHIFT_MONGODB_IP;
 		}
 		if (process.env.OPENSHIFT_MONGODB_DB_PORT) {
 			config.mongo.port = process.env.OPENSHIFT_MONGODB_DB_PORT;
