@@ -80,6 +80,9 @@ function onbb_deploy () {
 	# Get version number
 	local version=$(onbb_get_nodebb_version)
 
+	echo "Stopping NodeBB processes"
+	onbb_wait_until_stopped 3 || return 1
+
 	echo "Configuring NodeBB $version for OpenShift"
 
 	onbb_setup_sourcecode $version || return 1
