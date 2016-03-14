@@ -283,20 +283,19 @@ function onbb_setup_environment () {
 #
 # Ensure that NodeBB is stopped. Wait until it is or time runs up
 #
-# @param {number} [timeout=2]   In seconds
+# @param {number} [timeout=2]      In seconds
+# @param {number} [graceful=yes]   "no" to just kill node processes
 #
 function onbb_wait_until_stopped () {
 	local seconds=$1
+	local graceful=$2
 
 	if [ "$seconds" = "" ] ; then
 		seconds=2
 	fi
 
-	local running=`curl -I --connect-timeout 1 --max-time 1 --retry-max-time 1 "http://$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT/" 2>/dev/null`
-
-	# Return early if it stopped already
-	if [ "$running" = "" ] ; then
-		return 0
+	if [ "$graceful" = "" ] ; then
+		graceful="yes"
 	fi
 
 	# Find first PID of node process of current user
@@ -313,7 +312,7 @@ function onbb_wait_until_stopped () {
 	fi 
 
 	# Stop it gracefully if we have more than a second of time left
-	if [ "$seconds" -gt "1" ] ; then
+	if [ "$seconds" -gt "1" -a "$graceful" = "yes" ] ; then
 		local d=`pwd`
 		cd "$OPENSHIFT_REPO_DIR"
 		npm stop 2>/dev/null
@@ -321,13 +320,13 @@ function onbb_wait_until_stopped () {
 
 		sleep 1
 
-		onbb_wait_until_stopped $(echo "$seconds - 1" | bc) || return 1
+		onbb_wait_until_stopped $(echo "$seconds - 1" | bc) "no" || return 1
 		return 0
 	fi
 
-	# Only one second left - KILL!
+	# KILL!
 	kill "$PID" || return 1
-	onbb_wait_until_stopped $(echo "$seconds - 1" | bc) || return 1
+	onbb_wait_until_stopped $(echo "$seconds - 1" | bc) "no" || return 1
 
 	return 0
 }
