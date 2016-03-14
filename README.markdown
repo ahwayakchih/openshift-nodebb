@@ -169,7 +169,8 @@ Update NodeBB source code:
 git pull --no-edit -s recursive -X theirs upstream v0.9.x
 ```
 
-If you want to jump to new version, simply replace "v0.9.x" with another branch name. Keep in mind, however, that it will work only for an uprade (it is possible to downgrade, just not with that single pull command).
+You can jump to a new version by replacing "v0.9.x" with another branch name. Before you do that, run full update of your currently installed version, and only after that, repeat update process with new version.
+Keep in mind, however, that switching to a new version will work only for an uprade.
 
 Update OpenShift-NodeBB patches:
 
