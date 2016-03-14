@@ -170,7 +170,8 @@ git pull --no-edit -s recursive -X theirs upstream v0.9.x
 ```
 
 You can jump to a new version by replacing "v0.9.x" with another branch name. Before you do that, run full update of your currently installed version, and only after that, repeat update process with new version.
-Keep in mind, however, that switching to a new version will work only for an uprade.
+
+Keep in mind, however, that switching to a new version will work only for an uprade, e.g., from `v0.8.x` to `v0.9.x`.
 
 Update OpenShift-NodeBB patches:
 
