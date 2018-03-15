@@ -1,5 +1,7 @@
-NodeBB in the OpenShift cloud
-=============================
+NodeBB in the OpenShift v2 cloud
+================================
+
+*NOT MAINTAINED:* this guide was created when OpenShift v2 was available, which is not longer true. New version of OpenShift changed a lot of things, and information found in this guide will not work with it.
 
 This document will guide you through the process of installing NodeBB (http://www.nodebb.org) in the OpenShift cloud (https://www.openshift.com/). It will also let you know how to keep NodeBB updated afterwards.
 
